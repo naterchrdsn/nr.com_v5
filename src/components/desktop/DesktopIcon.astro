@@ -1,0 +1,18 @@
+---
+interface Props {
+  label: string;
+  icon: string;
+  windowId: string;
+}
+
+const { label, icon, windowId } = Astro.props;
+---
+
+<button
+  class="win95-desktop-icon"
+  data-window-target={windowId}
+  tabindex="0"
+>
+  <img src={icon} alt="" class="pixelated" />
+  <span>{label}</span>
+</button>

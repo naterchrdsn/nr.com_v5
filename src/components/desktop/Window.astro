@@ -1,0 +1,74 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  icon?: string;
+  defaultWidth?: number;
+  defaultHeight?: number;
+  defaultX?: number;
+  defaultY?: number;
+}
+
+const {
+  id,
+  title,
+  icon,
+  defaultWidth = 600,
+  defaultHeight = 400,
+  defaultX = 80,
+  defaultY = 40,
+} = Astro.props;
+---
+
+<div
+  class="win95-window absolute hidden"
+  id={`window-${id}`}
+  data-window-id={id}
+  style={`width: ${defaultWidth}px; height: ${defaultHeight}px; left: ${defaultX}px; top: ${defaultY}px;`}
+>
+  <!-- Title Bar -->
+  <div class="win95-titlebar" data-drag-handle>
+    {icon && <img src={icon} alt="" class="win95-titlebar-icon pixelated" />}
+    <span class="win95-titlebar-text">{title}</span>
+    <div class="win95-titlebar-buttons">
+      <button class="win95-titlebar-btn" data-action="minimize" aria-label="Minimize">
+        <svg viewBox="0 0 8 8"><line x1="1" y1="7" x2="7" y2="7" stroke="black" stroke-width="1.5"/></svg>
+      </button>
+      <button class="win95-titlebar-btn" data-action="maximize" aria-label="Maximize">
+        <svg viewBox="0 0 8 8"><rect x="0.5" y="0.5" width="7" height="7" fill="none" stroke="black" stroke-width="1"/><line x1="0.5" y1="1.5" x2="7.5" y2="1.5" stroke="black" stroke-width="1"/></svg>
+      </button>
+      <button class="win95-titlebar-btn" data-action="close" aria-label="Close">
+        <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="black" stroke-width="1.5"/><line x1="7" y1="1" x2="1" y2="7" stroke="black" stroke-width="1.5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Window Body -->
+  <div class="win95-window-body win95-sunken win95-scrollable" style="flex: 1; overflow-y: auto; margin-top: 2px;">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .win95-window {
+    display: none;
+    flex-direction: column;
+    resize: both;
+    overflow: hidden;
+    min-width: 200px;
+    min-height: 100px;
+  }
+  .win95-window.open {
+    display: flex;
+  }
+  .win95-window.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: calc(100% - 32px) !important;
+    resize: none;
+  }
+  .win95-window-body {
+    padding: 4px;
+  }
+</style>

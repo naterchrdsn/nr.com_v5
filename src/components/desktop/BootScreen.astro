@@ -1,0 +1,149 @@
+---
+---
+
+<div id="boot-screen" class="boot-screen">
+  <div class="boot-content">
+    <!-- BIOS-style text -->
+    <div class="boot-bios" id="boot-bios">
+      <div class="boot-line" style="animation-delay: 0s;">NateTech BIOS v4.20.69</div>
+      <div class="boot-line" style="animation-delay: 0.2s;">Copyright (C) 2014-2026, Nacho Labs</div>
+      <div class="boot-line" style="animation-delay: 0.5s;">&nbsp;</div>
+      <div class="boot-line" style="animation-delay: 0.7s;">Processor: Coffee-Powered i∞ @ ∞GHz</div>
+      <div class="boot-line" style="animation-delay: 0.9s;">Memory Test: 2 dogs + 3 cats ... OK</div>
+      <div class="boot-line" style="animation-delay: 1.2s;">Detecting IDE drives...</div>
+      <div class="boot-line" style="animation-delay: 1.5s;">Primary Master: BREAKFAST-SSD 256GB</div>
+      <div class="boot-line" style="animation-delay: 1.8s;">&nbsp;</div>
+      <div class="boot-line" style="animation-delay: 2.0s;">Starting Nate95...</div>
+    </div>
+
+    <!-- Windows-style loading -->
+    <div class="boot-loading" id="boot-loading">
+      <div class="boot-logo">
+        <div style="font-size: 24px; font-weight: bold; color: #c0c0c0; margin-bottom: 16px;">Nate<span style="color: #008080;">95</span></div>
+      </div>
+      <div class="win95-progress" style="width: 200px; margin: 0 auto;">
+        <div class="win95-progress-bar" id="boot-progress" style="width: 0%;"></div>
+      </div>
+      <div style="color: #808080; font-size: 11px; margin-top: 8px;">Loading desktop...</div>
+    </div>
+
+    <!-- Skip hint -->
+    <div class="boot-skip">Click or press any key to skip</div>
+  </div>
+</div>
+
+<style>
+  .boot-screen {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.5s ease;
+  }
+
+  .boot-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .boot-content {
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+  }
+
+  .boot-bios {
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #c0c0c0;
+  }
+
+  .boot-line {
+    opacity: 0;
+    animation: boot-appear 0.1s forwards;
+  }
+
+  .boot-loading {
+    display: none;
+    text-align: center;
+  }
+
+  .boot-skip {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #404040;
+    font-size: 10px;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes boot-appear {
+    to { opacity: 1; }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes progress-fill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+</style>
+
+<script>
+  function initBoot() {
+    const bootScreen = document.getElementById('boot-screen');
+    if (!bootScreen) return;
+
+    // Skip if already seen this session
+    if (sessionStorage.getItem('boot-seen')) {
+      bootScreen.remove();
+      return;
+    }
+
+    const bios = document.getElementById('boot-bios');
+    const loading = document.getElementById('boot-loading');
+    const progress = document.getElementById('boot-progress');
+
+    let phase = 'bios';
+
+    // Phase 2: show loading bar after BIOS text
+    setTimeout(() => {
+      if (phase === 'done') return;
+      phase = 'loading';
+      if (bios) bios.style.display = 'none';
+      if (loading) loading.style.display = 'block';
+      if (progress) {
+        progress.style.animation = 'progress-fill 1.5s linear forwards';
+      }
+    }, 2500);
+
+    // Phase 3: fade out and show desktop
+    setTimeout(() => {
+      if (phase === 'done') return;
+      finishBoot();
+    }, 4200);
+
+    // Skip on click or keypress
+    function finishBoot() {
+      phase = 'done';
+      sessionStorage.setItem('boot-seen', '1');
+      bootScreen.classList.add('fade-out');
+      setTimeout(() => bootScreen.remove(), 500);
+    }
+
+    bootScreen.addEventListener('click', finishBoot);
+    document.addEventListener('keydown', finishBoot, { once: true });
+  }
+
+  initBoot();
+</script>

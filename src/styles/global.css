@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@import "./win95.css";
+
+@font-face {
+  font-family: 'W95FA';
+  src: url('/fonts/W95FA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'W95FA', 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-size: 12px;
+  background: var(--win95-desktop-bg);
+  overflow: hidden;
+  height: 100%;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+/* Disable text smoothing for that authentic pixel feel */
+@media screen {
+  * {
+    text-rendering: optimizeSpeed;
+  }
+}
+
+/* Selection colors - Win95 style */
+::selection {
+  background: var(--win95-navy);
+  color: var(--win95-white);
+}
+
+/* Skip-to-content link for keyboard/screen reader users */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--win95-navy);
+  color: var(--win95-white);
+  padding: 4px 12px;
+  font-size: 12px;
+  z-index: 100000;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 0;
+}

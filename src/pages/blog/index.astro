@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Blog | Nate Richardson" description="Read blog posts from Nate Richardson about web development, frontend architecture, and technology." canonicalPath="/blog">
+  <!-- Desktop view -->
+  <div class="hidden md:block" style="position: fixed; inset: 0; background: var(--win95-desktop-bg); overflow: auto;">
+    <div class="win95-window" style="width: 600px; margin: 40px auto; padding: 3px; display: flex; flex-direction: column;">
+      <div class="win95-titlebar">
+        <img src="/icons/blog.svg" alt="" class="win95-titlebar-icon pixelated" />
+        <span class="win95-titlebar-text">Blog - File Explorer</span>
+        <div class="win95-titlebar-buttons">
+          <a href="/" class="win95-titlebar-btn" aria-label="Close" style="text-decoration: none;">
+            <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="black" stroke-width="1.5"/><line x1="7" y1="1" x2="1" y2="7" stroke="black" stroke-width="1.5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu Bar -->
+      <div class="win95-menubar" style="background: var(--win95-grey);">
+        <span class="win95-menubar-item"><u>F</u>ile</span>
+        <span class="win95-menubar-item"><u>E</u>dit</span>
+        <span class="win95-menubar-item"><u>V</u>iew</span>
+        <span class="win95-menubar-item"><u>H</u>elp</span>
+      </div>
+
+      <div class="win95-sunken" style="margin-top: 2px; padding: 8px; min-height: 300px;">
+        {posts.length === 0 && (
+          <p class="win95-text" style="color: #808080;">No posts yet.</p>
+        )}
+
+        {posts.map((post) => (
+          <a
+            href={`/blog/${post.id}`}
+            style="display: flex; align-items: center; gap: 8px; padding: 4px; text-decoration: none; color: inherit;"
+            class="win95-text"
+          >
+            <img src="/icons/blog.svg" alt="" style="width: 16px; height: 16px;" class="pixelated" />
+            <span style="flex: 1;">{post.data.title}</span>
+            <span style="color: #808080; font-size: 10px;">
+              {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <div class="win95-text" style="padding: 2px 4px; border-top: 1px solid #808080; background: var(--win95-grey); color: #808080;">
+        {posts.length} object(s) &nbsp; | &nbsp; <a href="/" style="color: #000080; text-decoration: underline;">← Back to Desktop</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile view -->
+  <div class="md:hidden" style="height: 100vh; display: flex; flex-direction: column; background: var(--win95-grey);">
+    <div style="background: var(--win95-grey); border-bottom: 2px solid; border-color: #ffffff #c0c0c0 #808080 #c0c0c0; height: 28px; display: flex; align-items: center; padding: 0 4px; gap: 4px;">
+      <a href="/" style="background: var(--win95-grey); border: 2px solid; border-color: #ffffff #404040 #404040 #ffffff; font-size: 10px; padding: 1px 6px; text-decoration: none; color: inherit; font-family: inherit;">◄ Home</a>
+      <span style="flex: 1; font-weight: bold; font-size: 11px; text-align: center;">Blog</span>
+    </div>
+    <div style="flex: 1; overflow-y: auto; background: var(--win95-white); margin: 2px; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; padding: 8px;">
+      {posts.map((post) => (
+        <a
+          href={`/blog/${post.id}`}
+          style="display: block; padding: 8px; margin-bottom: 4px; text-decoration: none; color: inherit; border-bottom: 1px solid #c0c0c0;"
+          class="win95-text"
+        >
+          <strong>{post.data.title}</strong>
+          <div style="font-size: 10px; color: #808080; margin-top: 2px;">
+            {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          </div>
+          <p style="margin: 4px 0 0 0; font-size: 11px; color: #404040;">{post.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

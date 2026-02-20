@@ -1,0 +1,360 @@
+---
+import { socialLinks, contactInfo } from '../../data/social';
+---
+
+<div class="contact-dialog win95-text">
+  <!-- Header area with mail icon metaphor -->
+  <div class="contact-header">
+    <div class="contact-header-icon">
+      <svg viewBox="0 0 32 32" width="32" height="32" style="image-rendering: pixelated;">
+        <rect x="2" y="6" width="28" height="20" fill="#fffff0" stroke="#000" stroke-width="1"/>
+        <polyline points="2,6 16,18 30,6" fill="none" stroke="#000080" stroke-width="1.5"/>
+        <line x1="2" y1="26" x2="12" y2="16" stroke="#808080" stroke-width="0.5"/>
+        <line x1="30" y1="26" x2="20" y2="16" stroke="#808080" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="contact-header-text">
+      <div class="contact-header-title">Address Book</div>
+      <div class="contact-header-subtitle">Nate Richardson - Contact Information</div>
+    </div>
+  </div>
+
+  <!-- Separator (etched line) -->
+  <div class="contact-separator"></div>
+
+  <!-- Compose message CTA -->
+  <fieldset class="contact-groupbox">
+    <legend>Send a Message</legend>
+    <div class="contact-compose">
+      <div class="contact-compose-row">
+        <span class="contact-compose-label">To:</span>
+        <span class="contact-compose-field win95-sunken">Nate Richardson (via Nacho Labs)</span>
+      </div>
+      <div class="contact-compose-row">
+        <span class="contact-compose-label">Subject:</span>
+        <span class="contact-compose-field win95-sunken" style="color: var(--win95-darkgrey); font-style: italic;">Let's build something great...</span>
+      </div>
+      <div class="contact-compose-actions">
+        <a
+          href={contactInfo.nachoLabs}
+          target="_blank"
+          rel="noopener"
+          class="win95-button contact-send-btn"
+        >
+          <svg viewBox="0 0 16 16" width="14" height="14" style="flex-shrink: 0;">
+            <rect x="1" y="3" width="14" height="10" fill="#fffff0" stroke="#000" stroke-width="0.5"/>
+            <polyline points="1,3 8,9 15,3" fill="none" stroke="#000080" stroke-width="1"/>
+          </svg>
+          Contact via Nacho Labs
+        </a>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Social Links Section -->
+  <fieldset class="contact-groupbox contact-links-groupbox">
+    <legend>Links</legend>
+    <div class="contact-listview win95-sunken">
+      <!-- List header row -->
+      <div class="contact-list-header">
+        <span class="contact-col-icon"></span>
+        <span class="contact-col-name">Name</span>
+        <span class="contact-col-url">Address</span>
+      </div>
+
+      <!-- List items -->
+      {socialLinks.map((link) => (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener"
+          class="contact-list-item"
+        >
+          <span class="contact-col-icon">
+            <span class="contact-link-icon">
+              {link.icon === 'github' && (
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                  <rect x="3" y="1" width="10" height="10" rx="2" fill="none" stroke="#000" stroke-width="1"/>
+                  <circle cx="8" cy="6" r="2" fill="#000"/>
+                  <path d="M4,14 Q4,10 8,10 Q12,10 12,14" fill="none" stroke="#000" stroke-width="1"/>
+                </svg>
+              )}
+              {link.icon === 'linkedin' && (
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                  <rect x="1" y="1" width="14" height="14" rx="1" fill="#000080" stroke="#000" stroke-width="0.5"/>
+                  <text x="4" y="12" fill="#fff" font-size="10" font-weight="bold" font-family="serif">in</text>
+                </svg>
+              )}
+              {link.icon === 'bluesky' && (
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                  <rect x="1" y="1" width="14" height="14" rx="1" fill="#1084d0" stroke="#000" stroke-width="0.5"/>
+                  <path d="M5,10 Q8,4 11,10" fill="none" stroke="#fff" stroke-width="1.5"/>
+                  <circle cx="8" cy="6" r="1.5" fill="#fff"/>
+                </svg>
+              )}
+            </span>
+          </span>
+          <span class="contact-col-name">{link.label}</span>
+          <span class="contact-col-url">{link.url}</span>
+        </a>
+      ))}
+    </div>
+  </fieldset>
+</div>
+
+<style>
+  .contact-dialog {
+    background: var(--win95-grey);
+    padding: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* --- Header area --- */
+  .contact-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 2px;
+  }
+
+  .contact-header-icon {
+    flex-shrink: 0;
+  }
+
+  .contact-header-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .contact-header-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--win95-black);
+  }
+
+  .contact-header-subtitle {
+    font-size: 11px;
+    color: var(--win95-darkgrey);
+  }
+
+  /* --- Etched separator --- */
+  .contact-separator {
+    border-top: 1px solid var(--win95-darkgrey);
+    border-bottom: 1px solid var(--win95-white);
+    margin: 2px 0;
+  }
+
+  /* --- Groupbox (fieldset) --- */
+  .contact-groupbox {
+    border: 2px solid;
+    border-color: var(--win95-darkgrey) var(--win95-white) var(--win95-white) var(--win95-darkgrey);
+    padding: 8px 10px;
+    margin: 0;
+  }
+
+  .contact-groupbox legend {
+    font-size: 11px;
+    padding: 0 4px;
+    color: var(--win95-black);
+  }
+
+  .contact-links-groupbox {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* --- Compose message area --- */
+  .contact-compose {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .contact-compose-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .contact-compose-label {
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 48px;
+    text-align: right;
+    color: var(--win95-black);
+  }
+
+  .contact-compose-field {
+    flex: 1;
+    padding: 1px 4px;
+    font-size: 11px;
+    min-height: 18px;
+    display: flex;
+    align-items: center;
+    background: var(--win95-white);
+  }
+
+  .contact-compose-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+  }
+
+  .contact-send-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--win95-black);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .contact-send-btn:hover {
+    text-decoration: none;
+  }
+
+  /* Focus ring like Win95 default button */
+  .contact-send-btn::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px dotted var(--win95-black);
+    pointer-events: none;
+    display: none;
+  }
+
+  /* --- List View --- */
+  .contact-listview {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--win95-white);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Column header */
+  .contact-list-header {
+    display: flex;
+    align-items: center;
+    padding: 1px 0;
+    font-size: 11px;
+    font-weight: bold;
+    background: var(--win95-grey);
+    border-bottom: 2px solid;
+    border-bottom-color: var(--win95-darkgrey);
+    flex-shrink: 0;
+  }
+
+  .contact-list-header span {
+    padding: 1px 6px;
+    border-right: 1px solid var(--win95-darkgrey);
+    border-left: 1px solid var(--win95-white);
+  }
+
+  .contact-list-header span:first-child {
+    border-left: none;
+  }
+
+  .contact-list-header span:last-child {
+    border-right: none;
+    flex: 1;
+  }
+
+  /* Column widths */
+  .contact-col-icon {
+    width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-col-name {
+    width: 72px;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-col-url {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  /* List items */
+  .contact-list-item {
+    display: flex;
+    align-items: center;
+    padding: 2px 0;
+    font-size: 11px;
+    text-decoration: none;
+    color: var(--win95-black);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .contact-list-item .contact-col-icon,
+  .contact-list-item .contact-col-name,
+  .contact-list-item .contact-col-url {
+    padding: 0 6px;
+  }
+
+  .contact-list-item .contact-col-url {
+    color: var(--win95-navy);
+  }
+
+  .contact-list-item:hover {
+    background: var(--win95-navy);
+    color: var(--win95-white);
+  }
+
+  .contact-list-item:hover .contact-col-url {
+    color: var(--win95-white);
+  }
+
+  .contact-link-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+  }
+
+  .contact-link-icon svg {
+    image-rendering: pixelated;
+  }
+
+  .contact-list-item:hover .contact-link-icon svg rect[fill="#000080"],
+  .contact-list-item:hover .contact-link-icon svg rect[fill="#1084d0"] {
+    opacity: 0.8;
+  }
+
+  /* --- Responsive tweaks for mobile --- */
+  @media (max-width: 420px) {
+    .contact-col-url {
+      display: none;
+    }
+
+    .contact-col-name {
+      flex: 1;
+      width: auto;
+    }
+
+    .contact-compose-label {
+      min-width: 38px;
+    }
+  }
+</style>

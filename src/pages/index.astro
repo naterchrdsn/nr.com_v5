@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DesktopOS from '../layouts/DesktopOS.astro';
+import MobileOS from '../layouts/MobileOS.astro';
+---
+
+<BaseLayout>
+  <!-- Desktop: Win95 (hidden on mobile) -->
+  <div class="hidden md:block" style="height: 100vh;">
+    <DesktopOS />
+  </div>
+
+  <!-- Mobile: Palm Pilot PDA (hidden on desktop) -->
+  <div class="md:hidden" style="height: 100vh;">
+    <MobileOS />
+  </div>
+</BaseLayout>

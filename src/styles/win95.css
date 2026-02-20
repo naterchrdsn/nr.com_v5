@@ -1,0 +1,420 @@
+/* ============================================
+   Windows 95 Design System
+   ============================================ */
+
+/* --- System Colors --- */
+:root {
+  --win95-bg: #008080;
+  --win95-grey: #c0c0c0;
+  --win95-darkgrey: #808080;
+  --win95-navy: #000080;
+  --win95-lightnavy: #1084d0;
+  --win95-white: #ffffff;
+  --win95-black: #000000;
+  --win95-desktop-bg: #008080;
+  --win95-shadow-dark: #404040;
+  --win95-shadow-light: #dfdfdf;
+}
+
+/* --- Raised 3D Panel (windows, buttons, taskbar) --- */
+.win95-raised {
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+}
+
+/* --- Sunken Panel (content areas, inputs) --- */
+.win95-sunken {
+  background: var(--win95-white);
+  border: 2px solid;
+  border-color: var(--win95-darkgrey) var(--win95-white) var(--win95-white) var(--win95-darkgrey);
+  box-shadow: inset 1px 1px 0 var(--win95-black), inset -1px -1px 0 var(--win95-shadow-light);
+}
+
+/* --- Window Frame --- */
+.win95-window {
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+  padding: 3px;
+}
+
+/* --- Title Bar --- */
+.win95-titlebar {
+  background: linear-gradient(90deg, var(--win95-navy), var(--win95-lightnavy));
+  color: var(--win95-white);
+  font-weight: bold;
+  padding: 2px 3px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  user-select: none;
+  line-height: 1;
+  height: 20px;
+}
+
+.win95-titlebar.inactive {
+  background: linear-gradient(90deg, var(--win95-darkgrey), #b5b5b5);
+}
+
+.win95-titlebar-icon {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+}
+
+.win95-titlebar-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0;
+}
+
+/* --- Title Bar Buttons (close, minimize, maximize) --- */
+.win95-titlebar-buttons {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.win95-titlebar-btn {
+  width: 16px;
+  height: 14px;
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.win95-titlebar-btn:active {
+  border-color: var(--win95-shadow-dark) var(--win95-white) var(--win95-white) var(--win95-shadow-dark);
+}
+
+.win95-titlebar-btn svg {
+  width: 8px;
+  height: 8px;
+}
+
+/* --- Button --- */
+.win95-button {
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+  padding: 2px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 23px;
+}
+
+.win95-button:active {
+  border-color: var(--win95-shadow-dark) var(--win95-white) var(--win95-white) var(--win95-shadow-dark);
+  box-shadow: inset 1px 1px 0 var(--win95-darkgrey), inset -1px -1px 0 var(--win95-shadow-light);
+}
+
+.win95-button:focus-visible {
+  outline: 1px dotted var(--win95-black);
+  outline-offset: -4px;
+}
+
+.win95-button.active {
+  border-color: var(--win95-shadow-dark) var(--win95-white) var(--win95-white) var(--win95-shadow-dark);
+  box-shadow: inset 1px 1px 0 var(--win95-darkgrey);
+  background: repeating-conic-gradient(var(--win95-grey) 0% 25%, var(--win95-white) 0% 50%) 0 0 / 2px 2px;
+}
+
+/* --- Taskbar --- */
+.win95-taskbar {
+  background: var(--win95-grey);
+  border-top: 2px solid var(--win95-white);
+  box-shadow: inset 0 1px 0 var(--win95-shadow-light);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 2px 2px;
+  gap: 2px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+/* --- Start Button --- */
+.win95-start-btn {
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+  padding: 1px 4px;
+  font-weight: bold;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  height: 24px;
+  font-family: inherit;
+}
+
+.win95-start-btn:active,
+.win95-start-btn.active {
+  border-color: var(--win95-shadow-dark) var(--win95-white) var(--win95-white) var(--win95-shadow-dark);
+  box-shadow: inset 1px 1px 0 var(--win95-darkgrey);
+}
+
+.win95-start-btn img {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+}
+
+/* --- Taskbar Clock --- */
+.win95-clock {
+  border: 1px solid;
+  border-color: var(--win95-darkgrey) var(--win95-white) var(--win95-white) var(--win95-darkgrey);
+  padding: 2px 6px;
+  font-size: 11px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* --- Taskbar Window Button --- */
+.win95-taskbar-btn {
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  padding: 1px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  height: 24px;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.win95-taskbar-btn.active {
+  border-color: var(--win95-shadow-dark) var(--win95-white) var(--win95-white) var(--win95-shadow-dark);
+  box-shadow: inset 1px 1px 0 var(--win95-darkgrey);
+  font-weight: bold;
+}
+
+.win95-taskbar-btn img {
+  width: 14px;
+  height: 14px;
+  image-rendering: pixelated;
+}
+
+/* --- Start Menu --- */
+.win95-start-menu {
+  position: fixed;
+  bottom: 32px;
+  left: 0;
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+  display: flex;
+  min-width: 180px;
+  z-index: 10000;
+}
+
+.win95-start-menu-sidebar {
+  background: linear-gradient(to top, var(--win95-navy), var(--win95-darkgrey));
+  width: 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+}
+
+.win95-start-menu-sidebar span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: var(--win95-white);
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.win95-start-menu-items {
+  flex: 1;
+  padding: 2px 0;
+}
+
+.win95-start-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px 4px 4px;
+  cursor: pointer;
+  font-size: 11px;
+  white-space: nowrap;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.win95-start-menu-item:hover {
+  background: var(--win95-navy);
+  color: var(--win95-white);
+}
+
+.win95-start-menu-item img {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+}
+
+.win95-start-menu-separator {
+  border-top: 1px solid var(--win95-darkgrey);
+  border-bottom: 1px solid var(--win95-white);
+  margin: 2px 3px;
+}
+
+/* --- Desktop Icon --- */
+.win95-desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 4px;
+  width: 70px;
+  text-align: center;
+  user-select: none;
+}
+
+.win95-desktop-icon img {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+}
+
+.win95-desktop-icon span {
+  font-size: 11px;
+  color: var(--win95-white);
+  text-shadow: 1px 1px 1px var(--win95-black);
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+.win95-desktop-icon.selected span {
+  background: var(--win95-navy);
+  color: var(--win95-white);
+  outline: 1px dotted var(--win95-white);
+}
+
+.win95-desktop-icon.selected img {
+  filter: brightness(0.7) sepia(1) hue-rotate(190deg) saturate(4);
+}
+
+/* --- Menu Bar (for Notepad, etc.) --- */
+.win95-menubar {
+  display: flex;
+  gap: 0;
+  padding: 1px 0;
+  font-size: 11px;
+}
+
+.win95-menubar-item {
+  padding: 1px 6px;
+  cursor: pointer;
+}
+
+.win95-menubar-item:hover {
+  background: var(--win95-navy);
+  color: var(--win95-white);
+}
+
+/* --- Scrollbar Styling --- */
+.win95-scrollable {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.win95-scrollable::-webkit-scrollbar {
+  width: 16px;
+}
+
+.win95-scrollable::-webkit-scrollbar-track {
+  background: repeating-conic-gradient(var(--win95-grey) 0% 25%, var(--win95-white) 0% 50%) 0 0 / 2px 2px;
+}
+
+.win95-scrollable::-webkit-scrollbar-thumb {
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+}
+
+.win95-scrollable::-webkit-scrollbar-button {
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  height: 16px;
+}
+
+/* --- Progress Bar (for boot screen) --- */
+.win95-progress {
+  background: var(--win95-white);
+  border: 2px solid;
+  border-color: var(--win95-darkgrey) var(--win95-white) var(--win95-white) var(--win95-darkgrey);
+  box-shadow: inset 1px 1px 0 var(--win95-black);
+  height: 20px;
+  padding: 2px;
+}
+
+.win95-progress-bar {
+  background: var(--win95-navy);
+  height: 100%;
+  transition: width 0.3s linear;
+}
+
+/* --- Tab Control (for grouped content) --- */
+.win95-tab {
+  padding: 2px 8px;
+  background: var(--win95-grey);
+  border: 2px solid;
+  border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+  border-bottom: none;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  position: relative;
+  top: 2px;
+}
+
+.win95-tab.active {
+  background: var(--win95-grey);
+  border-bottom: 2px solid var(--win95-grey);
+  z-index: 1;
+}
+
+/* --- Utility --- */
+.win95-text {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}

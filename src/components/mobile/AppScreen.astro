@@ -1,0 +1,100 @@
+---
+interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<div class="pda-app-screen hidden" id={`app-${id}`} data-app-id={id}>
+  <!-- App Top Bar -->
+  <div class="pda-app-topbar">
+    <button class="pda-back-btn" data-action="back" aria-label="Back">
+      ◄ Back
+    </button>
+    <span class="pda-app-title">{title}</span>
+    <button class="pda-close-btn" data-action="close-app" aria-label="Close">
+      ✕
+    </button>
+  </div>
+
+  <!-- App Content -->
+  <div class="pda-app-content win95-scrollable">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .pda-app-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--win95-grey);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.2s ease-out;
+  }
+  .pda-app-screen.open {
+    display: flex;
+    transform: translateX(0);
+  }
+  .pda-app-screen.hidden {
+    display: flex;
+    transform: translateX(100%);
+    pointer-events: none;
+  }
+  .pda-app-topbar {
+    background: var(--win95-grey);
+    border-bottom: 2px solid;
+    border-color: var(--win95-white) var(--win95-grey) var(--win95-darkgrey) var(--win95-grey);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .pda-back-btn {
+    background: var(--win95-grey);
+    border: 2px solid;
+    border-color: var(--win95-white) var(--win95-shadow-dark, #404040) var(--win95-shadow-dark, #404040) var(--win95-white);
+    font-size: 10px;
+    padding: 1px 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .pda-back-btn:active {
+    border-color: var(--win95-shadow-dark, #404040) var(--win95-white) var(--win95-white) var(--win95-shadow-dark, #404040);
+  }
+  .pda-app-title {
+    flex: 1;
+    font-weight: bold;
+    font-size: 11px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pda-close-btn {
+    background: var(--win95-grey);
+    border: 2px solid;
+    border-color: var(--win95-white) var(--win95-shadow-dark, #404040) var(--win95-shadow-dark, #404040) var(--win95-white);
+    font-size: 10px;
+    padding: 1px 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .pda-close-btn:active {
+    border-color: var(--win95-shadow-dark, #404040) var(--win95-white) var(--win95-white) var(--win95-shadow-dark, #404040);
+  }
+  .pda-app-content {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--win95-white);
+    margin: 3px;
+    border: 2px solid;
+    border-color: var(--win95-darkgrey) var(--win95-white) var(--win95-white) var(--win95-darkgrey);
+  }
+</style>

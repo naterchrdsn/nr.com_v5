@@ -1,0 +1,52 @@
+---
+const menuItems = [
+  { label: 'About Me', icon: '/icons/about.svg', windowId: 'about' },
+  { label: 'Experience', icon: '/icons/experience.svg', windowId: 'experience' },
+  { label: 'Projects', icon: '/icons/projects.svg', windowId: 'projects' },
+  { label: 'Blog', icon: '/icons/blog.svg', windowId: 'blog' },
+  { label: 'Contact', icon: '/icons/contact.svg', windowId: 'contact' },
+];
+---
+
+<div class="win95-start-menu hidden" id="start-menu" role="menu" aria-label="Start menu">
+  <!-- Sidebar -->
+  <div class="win95-start-menu-sidebar" aria-hidden="true">
+    <span>Nate95</span>
+  </div>
+
+  <!-- Menu Items -->
+  <div class="win95-start-menu-items">
+    {menuItems.map((item) => (
+      <button
+        class="win95-start-menu-item"
+        data-window-target={item.windowId}
+        role="menuitem"
+      >
+        <img src={item.icon} alt="" class="pixelated" />
+        {item.label}
+      </button>
+    ))}
+
+    <div class="win95-start-menu-separator" role="separator"></div>
+
+    <button class="win95-start-menu-item" id="shutdown-btn" role="menuitem">
+      <img src="/icons/shutdown.svg" alt="" class="pixelated" />
+      Shut Down...
+    </button>
+
+    <div class="win95-start-menu-separator" role="separator"></div>
+
+    <div class="start-menu-copyright">
+      &copy; {new Date().getFullYear()} Nate Richardson
+    </div>
+  </div>
+</div>
+
+<style>
+  .start-menu-copyright {
+    padding: 2px 4px;
+    font-size: 9px;
+    color: #808080;
+    text-align: center;
+  }
+</style>

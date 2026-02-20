@@ -1,0 +1,128 @@
+---
+import PdaTopBar from '../components/mobile/PdaTopBar.astro';
+import AppGrid from '../components/mobile/AppGrid.astro';
+import AppScreen from '../components/mobile/AppScreen.astro';
+import AboutContent from '../components/shared/AboutContent.astro';
+import ExperienceContent from '../components/shared/ExperienceContent.astro';
+import ProjectsContent from '../components/shared/ProjectsContent.astro';
+import ContactContent from '../components/shared/ContactContent.astro';
+import BlogList from '../components/shared/BlogList.astro';
+import SystemProperties from '../components/shared/SystemProperties.astro';
+---
+
+<div id="mobile-os" class="mobile-os">
+  <!-- PDA Top Bar -->
+  <PdaTopBar />
+
+  <!-- Home Screen -->
+  <div id="pda-home" class="pda-home">
+    <AppGrid />
+    <div class="pda-copyright">
+      &copy; {new Date().getFullYear()} Nate Richardson
+    </div>
+  </div>
+
+  <!-- App Screens (hidden by default, slide in on tap) -->
+  <AppScreen id="about" title="About Me">
+    <AboutContent />
+  </AppScreen>
+
+  <AppScreen id="experience" title="Experience">
+    <ExperienceContent />
+  </AppScreen>
+
+  <AppScreen id="projects" title="Projects">
+    <ProjectsContent />
+  </AppScreen>
+
+  <AppScreen id="blog" title="Blog">
+    <BlogList />
+  </AppScreen>
+
+  <AppScreen id="contact" title="Contact">
+    <ContactContent />
+  </AppScreen>
+
+  <AppScreen id="mycomputer" title="My Computer">
+    <SystemProperties />
+  </AppScreen>
+</div>
+
+<style>
+  .mobile-os {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--win95-grey);
+  }
+  .pda-home {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--win95-white);
+    margin: 2px;
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080;
+    display: flex;
+    flex-direction: column;
+  }
+  .pda-copyright {
+    margin-top: auto;
+    padding: 8px;
+    text-align: center;
+    font-size: 9px;
+    color: #808080;
+  }
+</style>
+
+<script>
+  function initMobileOS() {
+    let lastTrigger: HTMLElement | null = null;
+
+    // Open app when icon tapped
+    document.querySelectorAll<HTMLElement>('[data-app-target]').forEach((icon) => {
+      icon.addEventListener('click', () => {
+        const appId = icon.dataset.appTarget;
+        if (appId) {
+          lastTrigger = icon;
+          openApp(appId);
+        }
+      });
+    });
+
+    // Back / Close buttons
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('[data-action="back"]') || target.closest('[data-action="close-app"]')) {
+        const screen = target.closest<HTMLElement>('.pda-app-screen');
+        if (screen) {
+          const appId = screen.dataset.appId;
+          if (appId) closeApp(appId);
+        }
+      }
+    });
+  }
+
+  function openApp(id: string) {
+    const screen = document.getElementById(`app-${id}`);
+    if (!screen) return;
+    screen.classList.remove('hidden');
+    screen.classList.add('open');
+    // Move focus into the app screen for accessibility
+    const focusTarget = screen.querySelector<HTMLElement>('.pda-app-title, [tabindex], button, a');
+    if (focusTarget) focusTarget.focus();
+  }
+
+  function closeApp(id: string) {
+    const screen = document.getElementById(`app-${id}`);
+    if (!screen) return;
+    screen.classList.remove('open');
+    screen.classList.add('hidden');
+    // Return focus to the triggering icon
+    const trigger = document.querySelector<HTMLElement>(`[data-app-target="${id}"]`);
+    if (trigger) trigger.focus();
+  }
+
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    initMobileOS();
+  }
+</script>

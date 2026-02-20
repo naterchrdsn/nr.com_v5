@@ -1,0 +1,44 @@
+---
+interface Props {
+  label: string;
+  icon: string;
+  appId: string;
+}
+
+const { label, icon, appId } = Astro.props;
+---
+
+<button class="pda-app-icon" data-app-target={appId}>
+  <img src={icon} alt="" class="pixelated" />
+  <span>{label}</span>
+</button>
+
+<style>
+  .pda-app-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 4px;
+    font-family: inherit;
+    font-size: 10px;
+    color: var(--win95-black);
+    width: 100%;
+  }
+  .pda-app-icon:active {
+    background: var(--win95-navy);
+    color: var(--win95-white);
+  }
+  .pda-app-icon img {
+    width: 32px;
+    height: 32px;
+  }
+  .pda-app-icon span {
+    text-align: center;
+    line-height: 1.2;
+    word-wrap: break-word;
+  }
+</style>

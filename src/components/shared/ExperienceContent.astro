@@ -1,0 +1,510 @@
+---
+import { experience } from '../../data/experience';
+---
+
+<div class="exp-container win95-text">
+  <!-- Explorer-style menu bar -->
+  <div class="exp-menubar">
+    <span class="exp-menubar-item"><u>F</u>ile</span>
+    <span class="exp-menubar-item"><u>E</u>dit</span>
+    <span class="exp-menubar-item"><u>V</u>iew</span>
+    <span class="exp-menubar-item"><u>H</u>elp</span>
+  </div>
+
+  <!-- Address / path bar -->
+  <div class="exp-address-bar">
+    <span class="exp-address-label">Address</span>
+    <div class="exp-address-field win95-sunken" id="exp-address-field">
+      C:\Experience\{experience[0].company}
+    </div>
+    <button class="win95-button exp-go-btn" type="button">&#9658;</button>
+  </div>
+
+  <!-- Main explorer split layout -->
+  <div class="exp-explorer-layout">
+    <!-- Left: Tree View pane -->
+    <div class="exp-tree-pane win95-sunken win95-scrollable">
+      <div class="exp-tree-root">
+        <!-- Root node -->
+        <div class="exp-tree-item exp-tree-item--root">
+          <span class="exp-tree-toggle-area">&#9660;</span>
+          <span class="exp-tree-icon-root">&#128421;</span>
+          <span class="exp-tree-label"><b>Experience</b></span>
+        </div>
+
+        {experience.map((job, i) => (
+          <div class="exp-tree-branch" data-branch-index={i}>
+            <!-- Folder node -->
+            <div
+              class={`exp-tree-item exp-tree-item--folder ${i === 0 ? 'selected' : ''}`}
+              data-company-idx={i}
+              data-company-name={job.company}
+              data-company-date={job.dateRange}
+            >
+              <span class="exp-tree-toggle-area">{i === 0 ? '\u25BC' : '\u25B6'}</span>
+              <span class="exp-tree-icon-folder">{i === 0 ? '\uD83D\uDCC2' : '\uD83D\uDCC1'}</span>
+              <span class="exp-tree-label">{job.company}</span>
+            </div>
+            <!-- Sub-items (files inside folder) -->
+            <div class={`exp-tree-children ${i === 0 ? 'open' : ''}`}>
+              <div class="exp-tree-leaf">
+                <span class="exp-tree-pipe">&#9500;&#9472;</span>
+                <span class="exp-tree-icon-file">&#128196;</span>
+                <span class="exp-tree-label-sm">{job.title}.doc</span>
+              </div>
+              <div class="exp-tree-leaf">
+                <span class="exp-tree-pipe">&#9492;&#9472;</span>
+                <span class="exp-tree-icon-file">&#128196;</span>
+                <span class="exp-tree-label-sm">tech_stack.ini</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Resize handle -->
+    <div class="exp-resize-handle"></div>
+
+    <!-- Right: Detail View pane -->
+    <div class="exp-detail-pane win95-sunken win95-scrollable">
+      {experience.map((job, i) => (
+        <div class={`exp-detail-panel ${i === 0 ? 'active' : ''}`} data-detail-idx={i}>
+          <!-- Header with icon and titles -->
+          <div class="exp-detail-header">
+            <div class="exp-detail-icon-area">
+              <span class="exp-detail-big-icon">&#128188;</span>
+            </div>
+            <div class="exp-detail-titles">
+              <div class="exp-detail-company">{job.company}</div>
+              <div class="exp-detail-role">{job.title}</div>
+            </div>
+          </div>
+
+          <!-- Win95 etch line separator -->
+          <div class="exp-etch-line"></div>
+
+          <!-- Description in a group box -->
+          <fieldset class="exp-groupbox">
+            <legend>Job Description</legend>
+            <p class="exp-description-text">{job.description}</p>
+          </fieldset>
+
+          <!-- Technologies in a group box -->
+          <fieldset class="exp-groupbox">
+            <legend>Technology Stack</legend>
+            <div class="exp-tech-list">
+              {job.technologies.map((tech) => (
+                <span class="exp-tech-badge">{tech}</span>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Status bar (Win95-style, multi-section) -->
+  <div class="exp-status-bar">
+    <div class="exp-status-cell exp-status-cell--main" id="exp-status-objects">
+      {experience.length} object(s)
+    </div>
+    <div class="exp-status-cell exp-status-cell--date" id="exp-status-date">
+      {experience[0].dateRange}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Container: fills the window body, flex column layout */
+  .exp-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 280px;
+    background: var(--win95-grey);
+  }
+
+  /* ---- Menu bar ---- */
+  .exp-menubar {
+    display: flex;
+    font-size: 11px;
+    background: var(--win95-grey);
+    padding: 2px 2px;
+    border-bottom: 1px solid var(--win95-darkgrey);
+    flex-shrink: 0;
+  }
+  .exp-menubar-item {
+    padding: 1px 6px;
+    cursor: default;
+    user-select: none;
+  }
+  .exp-menubar-item:hover {
+    background: var(--win95-navy);
+    color: var(--win95-white);
+  }
+  .exp-menubar-item u {
+    text-decoration: underline;
+  }
+
+  /* ---- Address bar ---- */
+  .exp-address-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 4px;
+    background: var(--win95-grey);
+    font-size: 11px;
+    border-bottom: 1px solid var(--win95-darkgrey);
+    flex-shrink: 0;
+  }
+  .exp-address-label {
+    white-space: nowrap;
+    font-size: 11px;
+    padding-right: 2px;
+  }
+  .exp-address-field {
+    flex: 1;
+    padding: 1px 4px;
+    font-size: 11px;
+    font-family: inherit;
+    min-height: 18px;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .exp-go-btn {
+    min-height: 20px;
+    padding: 0 6px;
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  /* ---- Explorer split layout ---- */
+  .exp-explorer-layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ---- Tree pane (left) ---- */
+  .exp-tree-pane {
+    width: 175px;
+    min-width: 120px;
+    flex-shrink: 0;
+    padding: 2px;
+    font-size: 11px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--win95-white);
+  }
+
+  .exp-tree-root {
+    padding: 2px 0;
+  }
+
+  .exp-tree-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 1px 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    line-height: 1.6;
+  }
+  .exp-tree-item:hover:not(.selected) {
+    background: #e0e0e0;
+  }
+  .exp-tree-item.selected {
+    background: var(--win95-navy);
+    color: var(--win95-white);
+  }
+
+  .exp-tree-item--root {
+    margin-bottom: 1px;
+    cursor: default;
+  }
+
+  .exp-tree-item--folder {
+    padding-left: 14px;
+  }
+
+  .exp-tree-toggle-area {
+    width: 10px;
+    font-size: 7px;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .exp-tree-icon-root {
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .exp-tree-icon-folder {
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .exp-tree-label {
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Sub-items / children */
+  .exp-tree-children {
+    display: none;
+    margin-left: 26px;
+    padding-left: 2px;
+  }
+  .exp-tree-children.open {
+    display: block;
+  }
+
+  .exp-tree-leaf {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 2px;
+    line-height: 1.6;
+    white-space: nowrap;
+    color: var(--win95-darkgrey);
+  }
+
+  .exp-tree-pipe {
+    font-size: 10px;
+    color: var(--win95-darkgrey);
+    flex-shrink: 0;
+    width: 14px;
+  }
+
+  .exp-tree-icon-file {
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .exp-tree-label-sm {
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---- Resize handle between panes ---- */
+  .exp-resize-handle {
+    width: 4px;
+    background: var(--win95-grey);
+    cursor: col-resize;
+    border-left: 1px solid var(--win95-shadow-light);
+    border-right: 1px solid var(--win95-darkgrey);
+    flex-shrink: 0;
+  }
+
+  /* ---- Detail pane (right) ---- */
+  .exp-detail-pane {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: var(--win95-white);
+    min-width: 0;
+    font-size: 11px;
+  }
+
+  .exp-detail-panel {
+    display: none;
+  }
+  .exp-detail-panel.active {
+    display: block;
+  }
+
+  /* Detail header */
+  .exp-detail-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .exp-detail-icon-area {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .exp-detail-big-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .exp-detail-titles {
+    min-width: 0;
+    padding-top: 2px;
+  }
+
+  .exp-detail-company {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--win95-black);
+    line-height: 1.2;
+  }
+
+  .exp-detail-role {
+    font-size: 11px;
+    color: var(--win95-navy);
+    font-style: italic;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  /* Etch line (Win95 horizontal rule) */
+  .exp-etch-line {
+    border-top: 1px solid var(--win95-darkgrey);
+    border-bottom: 1px solid var(--win95-white);
+    margin: 8px 0;
+  }
+
+  /* Group box (Win95 fieldset) */
+  .exp-groupbox {
+    border: 1px solid var(--win95-darkgrey);
+    box-shadow: 1px 1px 0 var(--win95-white);
+    padding: 8px 10px 8px 10px;
+    margin: 0 0 8px 0;
+  }
+  .exp-groupbox legend {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 0 4px;
+  }
+
+  .exp-description-text {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 11px;
+  }
+
+  /* Tech badges as small raised buttons */
+  .exp-tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .exp-tech-badge {
+    background: var(--win95-grey);
+    border: 2px solid;
+    border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+    box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+    padding: 1px 6px;
+    font-size: 10px;
+    white-space: nowrap;
+    cursor: default;
+  }
+
+  /* ---- Status bar ---- */
+  .exp-status-bar {
+    display: flex;
+    gap: 2px;
+    padding: 2px 3px;
+    background: var(--win95-grey);
+    border-top: 1px solid var(--win95-shadow-light);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .exp-status-cell {
+    border: 1px solid;
+    border-color: var(--win95-darkgrey) var(--win95-white) var(--win95-white) var(--win95-darkgrey);
+    padding: 1px 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .exp-status-cell--main {
+    flex: 1;
+  }
+
+  .exp-status-cell--date {
+    min-width: 140px;
+    text-align: right;
+  }
+</style>
+
+<script>
+  function initExperienceExplorer() {
+    const treePane = document.querySelector('.exp-tree-pane');
+    if (!treePane) return;
+
+    // Avoid re-initializing
+    if (treePane.getAttribute('data-initialized') === 'true') return;
+    treePane.setAttribute('data-initialized', 'true');
+
+    const folders = treePane.querySelectorAll<HTMLElement>('[data-company-idx]');
+    const details = document.querySelectorAll<HTMLElement>('[data-detail-idx]');
+    const addressField = document.getElementById('exp-address-field');
+    const statusDate = document.getElementById('exp-status-date');
+
+    if (!folders.length) return;
+
+    folders.forEach((folder) => {
+      folder.addEventListener('click', () => {
+        const idx = folder.getAttribute('data-company-idx');
+        if (idx === null) return;
+
+        const companyName = folder.getAttribute('data-company-name') || '';
+        const dateRange = folder.getAttribute('data-company-date') || '';
+
+        // Deselect all folders, collapse all
+        folders.forEach((f) => {
+          f.classList.remove('selected');
+          const tog = f.querySelector('.exp-tree-toggle-area');
+          const ico = f.querySelector('.exp-tree-icon-folder');
+          if (tog) tog.textContent = '\u25B6';
+          if (ico) ico.textContent = '\uD83D\uDCC1';
+        });
+        document.querySelectorAll('.exp-tree-children').forEach((c) => c.classList.remove('open'));
+
+        // Select this folder, expand it
+        folder.classList.add('selected');
+        const toggle = folder.querySelector('.exp-tree-toggle-area');
+        const icon = folder.querySelector('.exp-tree-icon-folder');
+        if (toggle) toggle.textContent = '\u25BC';
+        if (icon) icon.textContent = '\uD83D\uDCC2';
+
+        const branch = folder.closest('.exp-tree-branch');
+        if (branch) {
+          const children = branch.querySelector('.exp-tree-children');
+          if (children) children.classList.add('open');
+        }
+
+        // Show corresponding detail panel
+        details.forEach((d) => d.classList.remove('active'));
+        const target = document.querySelector<HTMLElement>(`[data-detail-idx="${idx}"]`);
+        if (target) target.classList.add('active');
+
+        // Update address bar
+        if (addressField) {
+          addressField.textContent = `C:\\Experience\\${companyName}`;
+        }
+
+        // Update status bar date
+        if (statusDate) {
+          statusDate.textContent = dateRange;
+        }
+      });
+    });
+  }
+
+  // Initialize on load
+  initExperienceExplorer();
+
+  // Also handle Astro client-side navigation
+  document.addEventListener('astro:page-load', initExperienceExplorer);
+</script>

@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404 - File Not Found | Nate Richardson" canonicalPath="/404">
+  <div class="error-page">
+    <div class="error-dialog win95-raised">
+      <!-- Title Bar -->
+      <div class="win95-titlebar">
+        <span class="win95-titlebar-text">404 - File Not Found</span>
+        <div class="win95-titlebar-buttons">
+          <a href="/" class="win95-titlebar-btn" aria-label="Close">
+            <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="black" stroke-width="1.5"/><line x1="7" y1="1" x2="1" y2="7" stroke="black" stroke-width="1.5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Dialog Body -->
+      <div class="error-body">
+        <div class="error-icon">&#9888;</div>
+        <div class="error-content win95-text">
+          <p class="error-heading">Cannot find file or folder</p>
+          <p class="error-detail">
+            The item 'C:\NATERICHARDSON\{Astro.url.pathname}' does not exist.
+            It may have been moved, renamed, or deleted.
+          </p>
+          <p class="error-suggestion">
+            Make sure the path is correct and try again.
+          </p>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="error-actions">
+        <a href="/" class="win95-button error-btn">OK</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .error-page {
+    position: fixed;
+    inset: 0;
+    background: var(--win95-desktop-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .error-dialog {
+    max-width: 420px;
+    width: 100%;
+    padding: 3px;
+  }
+
+  .error-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 16px 12px;
+  }
+
+  .error-icon {
+    font-size: 32px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .error-content {
+    flex: 1;
+  }
+
+  .error-heading {
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    font-size: 12px;
+  }
+
+  .error-detail {
+    margin: 0 0 8px 0;
+    font-size: 11px;
+    line-height: 1.5;
+    word-break: break-all;
+  }
+
+  .error-suggestion {
+    margin: 0;
+    font-size: 11px;
+    color: var(--win95-darkgrey);
+  }
+
+  .error-actions {
+    text-align: center;
+    padding: 4px 16px 12px;
+  }
+
+  .error-btn {
+    display: inline-block;
+    min-width: 90px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--win95-black);
+    font-family: inherit;
+    font-size: 11px;
+  }
+</style>

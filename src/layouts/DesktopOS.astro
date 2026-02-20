@@ -1,0 +1,121 @@
+---
+import Window from '../components/desktop/Window.astro';
+import DesktopIcon from '../components/desktop/DesktopIcon.astro';
+import Taskbar from '../components/desktop/Taskbar.astro';
+import StartMenu from '../components/desktop/StartMenu.astro';
+import AboutContent from '../components/shared/AboutContent.astro';
+import ExperienceContent from '../components/shared/ExperienceContent.astro';
+import ProjectsContent from '../components/shared/ProjectsContent.astro';
+import ContactContent from '../components/shared/ContactContent.astro';
+import BlogList from '../components/shared/BlogList.astro';
+import BootScreen from '../components/desktop/BootScreen.astro';
+import EasterEggs from '../components/desktop/EasterEggs.astro';
+import SystemProperties from '../components/shared/SystemProperties.astro';
+---
+
+<!-- Boot Sequence -->
+<BootScreen />
+
+<!-- Desktop Background -->
+<div id="desktop" class="desktop-bg">
+  <!-- Desktop Icons -->
+  <div class="desktop-icons">
+    <DesktopIcon label="About Me" icon="/icons/about.svg" windowId="about" />
+    <DesktopIcon label="Experience" icon="/icons/experience.svg" windowId="experience" />
+    <DesktopIcon label="Projects" icon="/icons/projects.svg" windowId="projects" />
+    <DesktopIcon label="Blog" icon="/icons/blog.svg" windowId="blog" />
+    <DesktopIcon label="Contact" icon="/icons/contact.svg" windowId="contact" />
+
+    <!-- Easter Egg Icons -->
+    <div class="desktop-icons-separator">
+      <DesktopIcon label="My Computer" icon="/icons/mycomputer.svg" windowId="mycomputer" />
+    </div>
+    <DesktopIcon label="Recycle Bin" icon="/icons/recyclebin.svg" windowId="recyclebin" />
+  </div>
+
+  <!-- Windows -->
+  <Window id="about" title="About Me" icon="/icons/about.svg" defaultWidth={500} defaultHeight={420} defaultX={120} defaultY={30}>
+    <AboutContent />
+  </Window>
+
+  <Window id="experience" title="Experience" icon="/icons/experience.svg" defaultWidth={550} defaultHeight={460} defaultX={160} defaultY={50}>
+    <ExperienceContent />
+  </Window>
+
+  <Window id="projects" title="Projects" icon="/icons/projects.svg" defaultWidth={620} defaultHeight={500} defaultX={200} defaultY={30}>
+    <ProjectsContent />
+  </Window>
+
+  <Window id="blog" title="Blog - Notepad" icon="/icons/blog.svg" defaultWidth={500} defaultHeight={400} defaultX={180} defaultY={60}>
+    <BlogList />
+  </Window>
+
+  <Window id="contact" title="Contact" icon="/icons/contact.svg" defaultWidth={380} defaultHeight={300} defaultX={250} defaultY={80}>
+    <ContactContent />
+  </Window>
+
+  <!-- Easter Egg: My Computer -->
+  <Window id="mycomputer" title="My Computer" icon="/icons/mycomputer.svg" defaultWidth={400} defaultHeight={300} defaultX={200} defaultY={50}>
+    <SystemProperties />
+  </Window>
+
+  <!-- Easter Egg: Recycle Bin -->
+  <Window id="recyclebin" title="Recycle Bin" icon="/icons/recyclebin.svg" defaultWidth={350} defaultHeight={250} defaultX={280} defaultY={70}>
+    <div class="recyclebin-content win95-text">
+      <p class="recyclebin-text">
+        The Recycle Bin is empty.
+        <br /><br />
+        <span class="recyclebin-subtext">(I don't throw away good code... usually.)</span>
+      </p>
+    </div>
+  </Window>
+
+  <!-- Start Menu -->
+  <StartMenu />
+
+  <!-- Taskbar -->
+  <Taskbar />
+
+  <!-- Easter Eggs -->
+  <EasterEggs />
+</div>
+
+<style>
+  .desktop-bg {
+    position: fixed;
+    inset: 0;
+    background: var(--win95-desktop-bg);
+    padding-bottom: 32px;
+    overflow: hidden;
+  }
+  .desktop-icons {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .desktop-icons-separator {
+    margin-top: 16px;
+  }
+  .recyclebin-content {
+    padding: 16px;
+    background: var(--win95-white);
+  }
+  .recyclebin-text {
+    color: #808080;
+    text-align: center;
+    margin-top: 24px;
+  }
+  .recyclebin-subtext {
+    font-size: 10px;
+  }
+</style>
+
+<script>
+  import { initWindowManager } from '../components/desktop/window-manager';
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    initWindowManager();
+  }
+</script>

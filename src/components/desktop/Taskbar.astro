@@ -1,0 +1,54 @@
+---
+---
+
+<div class="win95-taskbar" id="taskbar">
+  <!-- Start Button -->
+  <button class="win95-start-btn" id="start-button">
+    <img src="/icons/win95-logo.svg" alt="" class="pixelated" />
+    <span>Start</span>
+  </button>
+
+  <!-- Divider -->
+  <div class="taskbar-divider"></div>
+
+  <!-- Open Windows Area -->
+  <div id="taskbar-buttons" class="taskbar-buttons-area">
+  </div>
+
+  <!-- System Tray / Clock -->
+  <div class="win95-clock" id="taskbar-clock">
+    12:00 PM
+  </div>
+</div>
+
+<style>
+  .taskbar-divider {
+    width: 1px;
+    height: 22px;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #ffffff;
+    margin: 0 2px;
+  }
+  .taskbar-buttons-area {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  function updateClock() {
+    const clock = document.getElementById('taskbar-clock');
+    if (clock) {
+      const now = new Date();
+      clock.textContent = now.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+    }
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+</script>

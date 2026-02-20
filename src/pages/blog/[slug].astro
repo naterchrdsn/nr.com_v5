@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const formattedDate = post.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${post.data.title} | Nate Richardson`} description={post.data.description} canonicalPath={`/blog/${post.id}`}>
+  <!-- Desktop: Notepad Window -->
+  <div class="hidden md:block" style="position: fixed; inset: 0; background: var(--win95-desktop-bg); overflow: auto;">
+    <div class="win95-window" style="width: 700px; max-height: 80vh; margin: 40px auto; padding: 3px; display: flex; flex-direction: column;">
+      <div class="win95-titlebar">
+        <img src="/icons/blog.svg" alt="" class="win95-titlebar-icon pixelated" />
+        <span class="win95-titlebar-text">{post.data.title} - Notepad</span>
+        <div class="win95-titlebar-buttons">
+          <a href="/blog" class="win95-titlebar-btn" aria-label="Close" style="text-decoration: none;">
+            <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="black" stroke-width="1.5"/><line x1="7" y1="1" x2="1" y2="7" stroke="black" stroke-width="1.5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Notepad Menu Bar -->
+      <div class="win95-menubar" style="background: var(--win95-grey);">
+        <span class="win95-menubar-item"><u>F</u>ile</span>
+        <span class="win95-menubar-item"><u>E</u>dit</span>
+        <span class="win95-menubar-item">F<u>o</u>rmat</span>
+        <span class="win95-menubar-item"><u>H</u>elp</span>
+      </div>
+
+      <!-- Notepad Content -->
+      <div class="win95-sunken win95-scrollable" style="flex: 1; margin-top: 2px; padding: 8px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6; overflow-y: auto; max-height: calc(80vh - 60px);">
+        <div style="color: #808080; margin-bottom: 12px; font-size: 10px;">
+          {formattedDate}
+          {post.data.tags && (
+            <span> &mdash; {post.data.tags.join(', ')}</span>
+          )}
+        </div>
+        <div class="blog-content">
+          <Content />
+        </div>
+      </div>
+
+      <!-- Status Bar -->
+      <div class="win95-text" style="padding: 2px 4px; border-top: 1px solid #808080; background: var(--win95-grey); display: flex; justify-content: space-between;">
+        <a href="/blog" style="color: #000080; text-decoration: underline; font-size: 10px;">← Back to Blog</a>
+        <span style="color: #808080; font-size: 10px;">Ln 1, Col 1</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile: Full screen reader -->
+  <div class="md:hidden" style="height: 100vh; display: flex; flex-direction: column; background: var(--win95-grey);">
+    <div style="background: var(--win95-grey); border-bottom: 2px solid; border-color: #ffffff #c0c0c0 #808080 #c0c0c0; height: 28px; display: flex; align-items: center; padding: 0 4px; gap: 4px;">
+      <a href="/blog" style="background: var(--win95-grey); border: 2px solid; border-color: #ffffff #404040 #404040 #ffffff; font-size: 10px; padding: 1px 6px; text-decoration: none; color: inherit; font-family: inherit;">◄ Back</a>
+      <span style="flex: 1; font-weight: bold; font-size: 11px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{post.data.title}</span>
+    </div>
+    <div style="flex: 1; overflow-y: auto; background: var(--win95-white); margin: 2px; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; padding: 12px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6;">
+      <div style="color: #808080; margin-bottom: 8px; font-size: 10px;">
+        {formattedDate}
+      </div>
+      <div class="blog-content">
+        <Content />
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-content :global(h1) {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 12px 0 6px 0;
+  }
+  .blog-content :global(h2) {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px 0 4px 0;
+  }
+  .blog-content :global(p) {
+    margin: 6px 0;
+  }
+  .blog-content :global(code) {
+    background: #c0c0c0;
+    padding: 0 3px;
+    font-size: 11px;
+  }
+  .blog-content :global(pre) {
+    background: #000;
+    color: #00ff00;
+    padding: 8px;
+    overflow-x: auto;
+    font-size: 11px;
+    margin: 8px 0;
+  }
+  .blog-content :global(a) {
+    color: #000080;
+    text-decoration: underline;
+  }
+  .blog-content :global(ul),
+  .blog-content :global(ol) {
+    padding-left: 20px;
+    margin: 6px 0;
+  }
+</style>

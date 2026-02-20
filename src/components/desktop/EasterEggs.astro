@@ -1,0 +1,731 @@
+---
+/**
+ * Easter Eggs for Nate95 Desktop
+ * 1. Clippy assistant
+ * 2. Konami code
+ * 3. BSOD on rapid clicking
+ * 4. Right-click context menu
+ * 5. Screensaver (bouncing logo)
+ */
+---
+
+<!-- ========== 1. CLIPPY ASSISTANT ========== -->
+<div id="clippy-container" style="display:none; position:fixed; bottom:48px; right:16px; z-index:9998;">
+  <!-- Speech bubble -->
+  <div class="clippy-bubble win95-raised" style="padding:8px 10px; margin-bottom:6px; max-width:220px; position:relative;">
+    <p id="clippy-text" style="margin:0 0 8px 0; font-size:11px; line-height:1.4;">
+      It looks like you're trying to hire a developer! Would you like help with that?
+    </p>
+    <div style="display:flex; gap:4px; justify-content:flex-end;">
+      <button class="win95-button" id="clippy-yes" style="font-size:10px; padding:1px 12px;">Yes!</button>
+      <button class="win95-button" id="clippy-dismiss" style="font-size:10px; padding:1px 12px;">Go away</button>
+    </div>
+    <!-- Bubble tail -->
+    <div style="position:absolute; bottom:-6px; right:20px; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:6px solid #c0c0c0;"></div>
+  </div>
+  <!-- Clippy character (CSS art) -->
+  <div class="clippy-character" style="width:36px; height:48px; margin-left:auto; margin-right:12px; position:relative;">
+    <!-- Eyebrow / paper clip wire body using CSS -->
+    <svg viewBox="0 0 36 48" width="36" height="48" style="filter:drop-shadow(1px 1px 0 rgba(0,0,0,0.3));">
+      <!-- Paperclip body -->
+      <path d="M18 4 C8 4 6 12 6 18 L6 36 C6 42 10 46 16 46 C22 46 26 42 26 36 L26 18 C26 14 24 10 18 10 C14 10 12 14 12 18 L12 32 C12 34 14 36 16 36 C18 36 20 34 20 32 L20 18"
+            fill="none" stroke="#808080" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Left eye -->
+      <circle cx="14" cy="20" r="2.5" fill="white" stroke="#404040" stroke-width="0.8"/>
+      <circle cx="14.5" cy="20" r="1" fill="#000"/>
+      <!-- Right eye -->
+      <circle cx="22" cy="20" r="2.5" fill="white" stroke="#404040" stroke-width="0.8"/>
+      <circle cx="22.5" cy="20" r="1" fill="#000"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ========== 2. KONAMI CODE OVERLAY ========== -->
+<div id="konami-overlay" role="dialog" aria-label="Konami code easter egg" style="display:none; position:fixed; inset:0; z-index:99998; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; cursor:pointer;">
+  <div style="text-align:center; color:#00ff00; font-family:'Courier New',monospace;">
+    <div style="font-size:48px; font-weight:bold; margin-bottom:16px; text-shadow:0 0 20px #00ff00;">CHEAT MODE ACTIVATED</div>
+    <div style="font-size:16px; margin-bottom:8px; color:#00cc00;">+30 LIVES | GOD MODE | UNLIMITED COFFEE</div>
+    <div style="font-size:14px; margin-bottom:24px; color:#00aa00;">Secret skill unlocked: Can center a div on first try</div>
+    <div style="font-size:20px; letter-spacing:4px; color:#ffff00; animation:konami-blink 0.5s infinite;">
+      &#9650; &#9650; &#9660; &#9660; &#9664; &#9654; &#9664; &#9654; B A
+    </div>
+    <div style="font-size:11px; color:#808080; margin-top:32px;">Click anywhere to dismiss</div>
+  </div>
+</div>
+
+<!-- ========== 3. BSOD ========== -->
+<div id="bsod-screen" role="dialog" aria-label="Blue screen of death easter egg" style="display:none; position:fixed; inset:0; z-index:99999; background:#0000aa; align-items:center; justify-content:center; cursor:pointer; padding:40px;">
+  <div style="color:white; font-family:'Courier New',monospace; font-size:14px; max-width:700px; line-height:1.6;">
+    <div style="text-align:center; margin-bottom:24px;">
+      <span style="background:white; color:#0000aa; padding:0 8px; font-weight:bold;">&nbsp;Nate95&nbsp;</span>
+    </div>
+    <p>A fatal exception 0x000000HIRE has occurred at 0028:C0FFEE42 in VXD PORTFOLIO.EXE.</p>
+    <p style="margin-top:12px;">The current developer is too talented. Windows has been rendered speechless.</p>
+    <p style="margin-top:12px;">* Press any key to send a job offer.<br/>* Press CTRL+ALT+DEL to pretend this didn't happen.</p>
+    <p style="margin-top:12px;">Error: DEVELOPER_TOO_GOOD_EXCEPTION<br/>Recommended action: HIRE_IMMEDIATELY</p>
+    <p style="margin-top:24px; text-align:center;">Press any key to continue <span id="bsod-cursor" style="animation:bsod-blink 1s step-end infinite;">_</span></p>
+  </div>
+</div>
+
+<!-- ========== 4. RIGHT-CLICK CONTEXT MENU ========== -->
+<div id="ctx-menu" class="win95-raised" style="display:none; position:fixed; z-index:10001; min-width:160px; padding:2px; background:#c0c0c0;">
+  <div class="ctx-item" data-action="refresh">Refresh</div>
+  <div class="ctx-separator"></div>
+  <div class="ctx-item ctx-has-sub">
+    New &nbsp; &#9654;
+    <div class="ctx-submenu win95-raised" style="display:none; position:absolute; left:100%; top:-2px; min-width:120px; padding:2px; background:#c0c0c0;">
+      <div class="ctx-item" data-action="new-folder">Folder</div>
+      <div class="ctx-item" data-action="new-shortcut">Shortcut</div>
+      <div class="ctx-item" data-action="new-txt">Text Document</div>
+    </div>
+  </div>
+  <div class="ctx-separator"></div>
+  <div class="ctx-item" data-action="arrange">Arrange Icons</div>
+  <div class="ctx-item" data-action="properties">Properties</div>
+</div>
+
+<!-- ========== 5. SCREENSAVER ========== -->
+<canvas id="screensaver" style="display:none; position:fixed; inset:0; z-index:99997; background:#000; cursor:none;"></canvas>
+
+<!-- ========== STYLES ========== -->
+<style>
+  /* Clippy entrance animation */
+  #clippy-container.show {
+    display: block !important;
+    animation: clippy-enter 0.3s ease-out;
+  }
+  @keyframes clippy-enter {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes clippy-exit {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(20px); opacity: 0; }
+  }
+
+  /* Konami blink */
+  @keyframes konami-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* BSOD cursor blink */
+  @keyframes bsod-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Context menu styles */
+  .ctx-item {
+    padding: 3px 20px 3px 8px;
+    font-size: 11px;
+    cursor: default;
+    position: relative;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .ctx-item:hover {
+    background: #000080;
+    color: #ffffff;
+  }
+  .ctx-has-sub:hover > .ctx-submenu {
+    display: block !important;
+  }
+  .ctx-separator {
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #ffffff;
+    margin: 2px 2px;
+  }
+  .ctx-item.disabled {
+    color: #808080;
+  }
+
+  /* Dialog overlay */
+  .ee-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ee-alert-body {
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .ee-alert-icon {
+    font-size: 24px;
+    line-height: 1;
+  }
+  .ee-alert-message {
+    font-size: 11px;
+    white-space: pre-line;
+    line-height: 1.5;
+  }
+  .ee-alert-footer {
+    text-align: center;
+    padding: 4px 8px 8px;
+  }
+  .ee-prop-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 8px;
+  }
+  .ee-prop-info {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .ee-prop-buttons {
+    text-align: right;
+    padding-top: 8px;
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  /* Konami overlay rainbow background for desktop */
+  #desktop.konami-mode {
+    background: repeating-linear-gradient(
+      45deg,
+      #008080 0px, #008080 20px,
+      #006060 20px, #006060 40px,
+      #00a0a0 40px, #00a0a0 60px
+    ) !important;
+  }
+</style>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+  // Wait for DOM ready, then boot complete
+  function initEasterEggs() {
+    // Small delay to let boot finish
+    const bootSeen = sessionStorage.getItem('boot-seen');
+    const delay = bootSeen ? 500 : 5000;
+    setTimeout(startEasterEggs, delay);
+  }
+
+  function startEasterEggs() {
+    initClippy();
+    initKonami();
+    initBSOD();
+    initContextMenu();
+    initScreensaver();
+  }
+
+  // =============================================
+  // 1. CLIPPY ASSISTANT
+  // =============================================
+  function initClippy() {
+    if (sessionStorage.getItem('clippy-seen')) return;
+
+    const container = document.getElementById('clippy-container');
+    if (!container) return;
+
+    const tips = [
+      "It looks like you're trying to hire a developer! Would you like help with that?",
+      "I see you're browsing a portfolio. Tip: This developer is available for hire!",
+      "Did you know? This developer can center a div without Googling it.",
+      "You've been here a while! Maybe it's time to check out the Projects section?",
+      "Pro tip: Try the Konami code for a surprise! (hint: it involves arrow keys)",
+    ];
+
+    const randomTip = tips[Math.floor(Math.random() * tips.length)];
+
+    // Show Clippy after 20 seconds
+    setTimeout(() => {
+      // Don't show if screensaver or BSOD is active
+      if (document.getElementById('bsod-screen')?.style.display === 'flex') return;
+      if (document.getElementById('screensaver')?.style.display === 'block') return;
+
+      const textEl = document.getElementById('clippy-text');
+      if (textEl) textEl.textContent = randomTip;
+
+      container.classList.add('show');
+      sessionStorage.setItem('clippy-seen', '1');
+
+      // "Yes!" opens contact window via the window manager
+      document.getElementById('clippy-yes')?.addEventListener('click', async () => {
+        dismissClippy(container);
+        const { openWindow } = await import('./window-manager');
+        openWindow('contact');
+      });
+
+      // Dismiss
+      document.getElementById('clippy-dismiss')?.addEventListener('click', () => {
+        dismissClippy(container);
+      });
+
+      // Auto-dismiss after 15 seconds
+      setTimeout(() => {
+        if (container.classList.contains('show')) {
+          dismissClippy(container);
+        }
+      }, 15000);
+    }, 20000);
+  }
+
+  function dismissClippy(container: HTMLElement) {
+    container.style.animation = 'clippy-exit 0.3s ease-in forwards';
+    setTimeout(() => {
+      container.classList.remove('show');
+      container.style.display = 'none';
+      container.style.animation = '';
+    }, 300);
+  }
+
+  // =============================================
+  // 2. KONAMI CODE
+  // =============================================
+  function initKonami() {
+    const konamiSequence = [
+      'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+      'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+      'b', 'a'
+    ];
+    let konamiIndex = 0;
+    const overlay = document.getElementById('konami-overlay');
+    if (!overlay) return;
+
+    document.addEventListener('keydown', (e) => {
+      // Don't track if BSOD or screensaver active
+      if (document.getElementById('bsod-screen')?.style.display === 'flex') return;
+      if (document.getElementById('screensaver')?.style.display === 'block') return;
+
+      const expected = konamiSequence[konamiIndex];
+      if (e.key === expected || e.key.toLowerCase() === expected) {
+        konamiIndex++;
+        if (konamiIndex === konamiSequence.length) {
+          konamiIndex = 0;
+          activateKonami(overlay);
+        }
+      } else {
+        konamiIndex = 0;
+        // Check if the failed key is the start of the sequence
+        if (e.key === konamiSequence[0]) {
+          konamiIndex = 1;
+        }
+      }
+    });
+  }
+
+  function trapFocus(overlay: HTMLElement, dismiss: () => void) {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+      }
+    };
+    overlay.addEventListener('keydown', handler);
+    overlay.setAttribute('tabindex', '-1');
+    overlay.focus();
+    return () => overlay.removeEventListener('keydown', handler);
+  }
+
+  function activateKonami(overlay: HTMLElement) {
+    overlay.style.display = 'flex';
+
+    // Toggle desktop pattern
+    const desktop = document.getElementById('desktop');
+    if (desktop) desktop.classList.toggle('konami-mode');
+
+    function dismiss() {
+      overlay.style.display = 'none';
+      cleanup();
+    }
+
+    const cleanup = trapFocus(overlay, dismiss);
+
+    overlay.addEventListener('click', dismiss, { once: true });
+    document.addEventListener('keydown', dismiss, { once: true });
+  }
+
+  // =============================================
+  // 3. BSOD (Blue Screen of Death)
+  // =============================================
+  function initBSOD() {
+    if (sessionStorage.getItem('bsod-seen')) return;
+
+    const bsod = document.getElementById('bsod-screen');
+    if (!bsod) return;
+
+    let clickCount = 0;
+    let clickTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const desktop = document.getElementById('desktop');
+    if (!desktop) return;
+
+    desktop.addEventListener('click', (e) => {
+      // Only count clicks directly on the desktop background, not on windows/icons/taskbar
+      const target = e.target as HTMLElement;
+      if (target.id !== 'desktop' && !target.closest('#desktop > div:first-child')) {
+        // Allow clicks on the icon container area but not on icons themselves
+        if (target.closest('.win95-desktop-icon') || target.closest('.win95-window') ||
+            target.closest('.win95-taskbar') || target.closest('.win95-start-menu')) {
+          return;
+        }
+      }
+
+      clickCount++;
+
+      if (clickTimer) clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { clickCount = 0; }, 3000);
+
+      if (clickCount >= 10) {
+        clickCount = 0;
+        sessionStorage.setItem('bsod-seen', '1');
+        showBSOD(bsod);
+      }
+    });
+  }
+
+  function showBSOD(bsod: HTMLElement) {
+    bsod.style.display = 'flex';
+
+    function dismissBSOD() {
+      bsod.style.display = 'none';
+      cleanup();
+    }
+
+    const cleanup = trapFocus(bsod, dismissBSOD);
+
+    bsod.addEventListener('click', dismissBSOD, { once: true });
+    document.addEventListener('keydown', dismissBSOD, { once: true });
+  }
+
+  // =============================================
+  // 4. RIGHT-CLICK CONTEXT MENU
+  // =============================================
+  function initContextMenu() {
+    const menu = document.getElementById('ctx-menu');
+    if (!menu) return;
+
+    // Show context menu on right-click on desktop
+    document.addEventListener('contextmenu', (e) => {
+      const target = e.target as HTMLElement;
+      // Only on the desktop area, not on windows or taskbar
+      if (!target.closest('#desktop') || target.closest('.win95-window') ||
+          target.closest('.win95-taskbar') || target.closest('.win95-start-menu') ||
+          target.closest('#start-menu')) {
+        return;
+      }
+
+      e.preventDefault();
+
+      // Position menu at cursor
+      const x = Math.min(e.clientX, window.innerWidth - 170);
+      const y = Math.min(e.clientY, window.innerHeight - 160);
+      menu.style.left = x + 'px';
+      menu.style.top = y + 'px';
+      menu.style.display = 'block';
+    });
+
+    // Close menu on click anywhere
+    document.addEventListener('click', () => {
+      menu.style.display = 'none';
+    });
+
+    // Handle context menu actions
+    menu.addEventListener('click', (e) => {
+      const item = (e.target as HTMLElement).closest('.ctx-item') as HTMLElement | null;
+      if (!item) return;
+
+      const action = item.dataset.action;
+      menu.style.display = 'none';
+
+      switch (action) {
+        case 'refresh':
+          window.location.reload();
+          break;
+        case 'new-folder':
+        case 'new-shortcut':
+        case 'new-txt':
+          showContextAlert('Access Denied: This desktop is read-only.\nNice try though!');
+          break;
+        case 'arrange':
+          showContextAlert('Icons are already arranged by\nimportance and vibes.');
+          break;
+        case 'properties':
+          showPropertiesDialog();
+          break;
+      }
+    });
+  }
+
+  function createDialogOverlay(): HTMLDivElement {
+    const overlay = document.createElement('div');
+    overlay.className = 'ee-dialog-overlay';
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.remove();
+    });
+    return overlay;
+  }
+
+  function createTitleBar(title: string, closeClass: string): HTMLDivElement {
+    const bar = document.createElement('div');
+    bar.className = 'win95-titlebar';
+    bar.style.marginBottom = '2px';
+
+    const text = document.createElement('span');
+    text.className = 'win95-titlebar-text';
+    text.textContent = title;
+    bar.appendChild(text);
+
+    const btns = document.createElement('div');
+    btns.className = 'win95-titlebar-buttons';
+    const closeBtn = document.createElement('button');
+    closeBtn.className = `win95-titlebar-btn ${closeClass}`;
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.innerHTML = '<svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="black" stroke-width="1.5"/><line x1="7" y1="1" x2="1" y2="7" stroke="black" stroke-width="1.5"/></svg>';
+    btns.appendChild(closeBtn);
+    bar.appendChild(btns);
+    return bar;
+  }
+
+  function showContextAlert(message: string) {
+    const overlay = createDialogOverlay();
+
+    const dialog = document.createElement('div');
+    dialog.className = 'win95-raised';
+    dialog.style.cssText = 'padding:3px; min-width:280px;';
+
+    dialog.appendChild(createTitleBar('Nate95', 'ctx-dialog-close'));
+
+    const body = document.createElement('div');
+    body.className = 'ee-alert-body';
+    const icon = document.createElement('div');
+    icon.className = 'ee-alert-icon';
+    icon.textContent = '\u26A0';
+    const msg = document.createElement('div');
+    msg.className = 'ee-alert-message';
+    msg.textContent = message;
+    body.appendChild(icon);
+    body.appendChild(msg);
+    dialog.appendChild(body);
+
+    const footer = document.createElement('div');
+    footer.className = 'ee-alert-footer';
+    const okBtn = document.createElement('button');
+    okBtn.className = 'win95-button ctx-dialog-close';
+    okBtn.style.minWidth = '75px';
+    okBtn.textContent = 'OK';
+    footer.appendChild(okBtn);
+    dialog.appendChild(footer);
+
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    overlay.querySelectorAll('.ctx-dialog-close').forEach(btn => {
+      btn.addEventListener('click', () => overlay.remove());
+    });
+  }
+
+  function showPropertiesDialog() {
+    const overlay = createDialogOverlay();
+
+    const dialog = document.createElement('div');
+    dialog.className = 'win95-raised';
+    dialog.style.cssText = 'padding:3px; width:320px;';
+
+    dialog.appendChild(createTitleBar('Desktop Properties', 'prop-close'));
+
+    const content = document.createElement('div');
+    content.style.padding = '8px';
+
+    // Tabs
+    const tabs = document.createElement('div');
+    tabs.className = 'ee-prop-tabs';
+    ['General', 'Screen Saver', 'Appearance'].forEach((label, i) => {
+      const tab = document.createElement('div');
+      tab.className = 'win95-tab' + (i === 0 ? ' active' : '');
+      tab.style.fontSize = '11px';
+      if (i > 0) tab.style.color = '#808080';
+      tab.textContent = label;
+      tabs.appendChild(tab);
+    });
+    content.appendChild(tabs);
+
+    // Properties panel
+    const panel = document.createElement('div');
+    panel.className = 'win95-sunken';
+    panel.style.padding = '12px';
+    const info = document.createElement('div');
+    info.className = 'ee-prop-info';
+    const props = [
+      ['Desktop', 'Nate95 Professional Edition'],
+      ['Theme', 'Teal (classic)'],
+      ['Resolution', `${window.innerWidth}x${window.innerHeight}`],
+      ['Color Depth', '16 million (but mostly teal)'],
+      ['Wallpaper', 'Solid Teal.bmp'],
+      ['Built with', 'Astro, CSS, and nostalgia'],
+    ];
+    props.forEach(([key, val], i) => {
+      const p = document.createElement('p');
+      p.style.margin = i < props.length - 1 ? '0 0 6px 0' : '0';
+      const strong = document.createElement('strong');
+      strong.textContent = `${key}: `;
+      p.appendChild(strong);
+      p.appendChild(document.createTextNode(val));
+      info.appendChild(p);
+    });
+    panel.appendChild(info);
+    content.appendChild(panel);
+
+    // Buttons
+    const btnRow = document.createElement('div');
+    btnRow.className = 'ee-prop-buttons';
+    ['OK', 'Cancel'].forEach(label => {
+      const btn = document.createElement('button');
+      btn.className = 'win95-button prop-close';
+      btn.style.minWidth = '75px';
+      btn.textContent = label;
+      btnRow.appendChild(btn);
+    });
+    const applyBtn = document.createElement('button');
+    applyBtn.className = 'win95-button';
+    applyBtn.style.cssText = 'min-width:75px; color:#808080;';
+    applyBtn.disabled = true;
+    applyBtn.textContent = 'Apply';
+    btnRow.appendChild(applyBtn);
+    content.appendChild(btnRow);
+
+    dialog.appendChild(content);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    overlay.querySelectorAll('.prop-close').forEach(btn => {
+      btn.addEventListener('click', () => overlay.remove());
+    });
+  }
+
+  // =============================================
+  // 5. SCREENSAVER (Bouncing "Nate95" logo)
+  // =============================================
+  function initScreensaver() {
+    const canvas = document.getElementById('screensaver') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let idleTimer: ReturnType<typeof setTimeout> | null = null;
+    let animFrame: number | null = null;
+    let active = false;
+
+    const IDLE_TIMEOUT = 60000; // 60 seconds
+
+    // Logo state
+    let x = 100, y = 100;
+    let dx = 2, dy = 1.5;
+    const logoW = 140, logoH = 50;
+    let hue = 0;
+
+    function resetIdleTimer() {
+      if (idleTimer) clearTimeout(idleTimer);
+
+      // Dismiss screensaver on any input
+      if (active) {
+        dismissScreensaver();
+        return;
+      }
+
+      idleTimer = setTimeout(startScreensaver, IDLE_TIMEOUT);
+    }
+
+    function startScreensaver() {
+      // Don't activate if BSOD, Konami, or boot screen is showing
+      if (document.getElementById('bsod-screen')?.style.display === 'flex') return;
+      if (document.getElementById('konami-overlay')?.style.display === 'flex') return;
+      if (document.getElementById('boot-screen')) return;
+
+      active = true;
+      canvas.style.display = 'block';
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Randomize starting position
+      x = Math.random() * (canvas.width - logoW);
+      y = Math.random() * (canvas.height - logoH);
+
+      animate();
+    }
+
+    function animate() {
+      if (!active || !ctx) return;
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Move
+      x += dx;
+      y += dy;
+
+      // Bounce
+      if (x + logoW > canvas.width || x < 0) {
+        dx = -dx;
+        x = Math.max(0, Math.min(x, canvas.width - logoW));
+        hue = (hue + 60) % 360;
+      }
+      if (y + logoH > canvas.height || y < 0) {
+        dy = -dy;
+        y = Math.max(0, Math.min(y, canvas.height - logoH));
+        hue = (hue + 60) % 360;
+      }
+
+      // Draw "Nate95" text
+      ctx.save();
+      ctx.font = 'bold 36px "MS Sans Serif", "Microsoft Sans Serif", Tahoma, sans-serif';
+      ctx.fillStyle = `hsl(${hue}, 80%, 60%)`;
+      ctx.shadowColor = `hsl(${hue}, 80%, 40%)`;
+      ctx.shadowBlur = 10;
+      ctx.fillText('Nate', x, y + 36);
+
+      ctx.fillStyle = `hsl(${(hue + 120) % 360}, 80%, 60%)`;
+      ctx.shadowColor = `hsl(${(hue + 120) % 360}, 80%, 40%)`;
+      const nateWidth = ctx.measureText('Nate').width;
+      ctx.fillText('95', x + nateWidth, y + 36);
+      ctx.restore();
+
+      animFrame = requestAnimationFrame(animate);
+    }
+
+    function dismissScreensaver() {
+      active = false;
+      canvas.style.display = 'none';
+      if (animFrame) cancelAnimationFrame(animFrame);
+      animFrame = null;
+
+      // Clear the canvas
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Restart idle timer
+      idleTimer = setTimeout(startScreensaver, IDLE_TIMEOUT);
+    }
+
+    // Listen for activity
+    const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
+    events.forEach(evt => {
+      document.addEventListener(evt, resetIdleTimer, { passive: true });
+    });
+
+    // Start the idle timer
+    resetIdleTimer();
+
+    // Handle window resize while screensaver is active
+    window.addEventListener('resize', () => {
+      if (active) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
+  }
+
+  // =============================================
+  // INIT
+  // =============================================
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEasterEggs);
+  } else {
+    initEasterEggs();
+  }
+</script>

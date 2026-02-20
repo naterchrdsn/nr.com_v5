@@ -1,0 +1,551 @@
+---
+import { projects, websitePortfolio, caseStudies } from '../../data/projects';
+---
+
+<div class="proj-container win95-text">
+  <!-- Tab strip -->
+  <div class="proj-tab-strip">
+    <button class="proj-tab active" data-proj-tab="opensource" type="button">Open Source</button>
+    <button class="proj-tab" data-proj-tab="casestudies" type="button">Case Studies</button>
+    <button class="proj-tab" data-proj-tab="clientwork" type="button">Client Work</button>
+  </div>
+
+  <!-- Tab content container (raised panel that sits below tabs) -->
+  <div class="proj-tab-body win95-raised">
+
+    <!-- ========== Open Source Tab ========== -->
+    <div class="proj-tab-content active" data-proj-panel="opensource">
+      <div class="proj-os-grid">
+        {projects.map((project) => (
+          <div class="proj-os-card">
+            <!-- Icon + name row -->
+            <div class="proj-os-card-header">
+              <div class="proj-os-icon-area">
+                {project.image ? (
+                  <img src={project.image} alt={project.title} class="proj-os-icon-img pixelated" loading="lazy" decoding="async" />
+                ) : (
+                  <span class="proj-os-icon-emoji">&#128230;</span>
+                )}
+              </div>
+              <div class="proj-os-card-info">
+                <div class="proj-os-name">{project.title}</div>
+                <!-- GitHub button -->
+                {project.link && (
+                  <a href={project.link} target="_blank" rel="noopener" class="proj-os-link-btn win95-button">
+                    &#127760; View on GitHub
+                  </a>
+                )}
+              </div>
+            </div>
+            <!-- Description in a sunken text area -->
+            <div class="proj-os-desc-area win95-sunken win95-scrollable">
+              <p class="proj-os-desc">{project.description}</p>
+            </div>
+            <!-- Tech tags -->
+            <div class="proj-os-techs">
+              {project.technologies.map((tech) => (
+                <span class="proj-os-tech-badge">{tech}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ========== Case Studies Tab ========== -->
+    <div class="proj-tab-content" data-proj-panel="casestudies">
+      {caseStudies.map((cs, i) => (
+        <fieldset class="proj-cs-groupbox" data-cs-index={i}>
+          <legend class="proj-cs-legend">
+            <button class="proj-cs-toggle" data-cs-toggle={i} type="button">
+              <span class="proj-cs-toggle-icon">{i === 0 ? '\u25BC' : '\u25B6'}</span>
+              {cs.title} &mdash; {cs.subtitle}
+            </button>
+          </legend>
+
+          <div class={`proj-cs-body ${i === 0 ? 'open' : ''}`} data-cs-body={i}>
+            <!-- Image in sunken frame -->
+            {cs.image && (
+              <div class="proj-cs-image-frame win95-sunken">
+                <img src={cs.image} alt={cs.title} class="proj-cs-image" loading="lazy" decoding="async" />
+              </div>
+            )}
+
+            <!-- Challenge / Solution / Impact as labeled sections -->
+            <div class="proj-cs-sections">
+              <div class="proj-cs-section">
+                <div class="proj-cs-section-label">
+                  <span class="proj-cs-section-icon">&#9888;&#65039;</span> The Challenge
+                </div>
+                <div class="proj-cs-section-text win95-sunken">{cs.challenge}</div>
+              </div>
+
+              <div class="proj-cs-section">
+                <div class="proj-cs-section-label">
+                  <span class="proj-cs-section-icon">&#128295;</span> The Solution
+                </div>
+                <div class="proj-cs-section-text win95-sunken">{cs.solution}</div>
+              </div>
+
+              <div class="proj-cs-section">
+                <div class="proj-cs-section-label">
+                  <span class="proj-cs-section-icon">&#11088;</span> The Impact
+                </div>
+                <div class="proj-cs-section-text win95-sunken">{cs.impact}</div>
+              </div>
+            </div>
+
+            <!-- Tech badges -->
+            <div class="proj-cs-techs">
+              {cs.technologies.map((tech) => (
+                <span class="proj-cs-tech-badge">{tech}</span>
+              ))}
+            </div>
+          </div>
+        </fieldset>
+      ))}
+    </div>
+
+    <!-- ========== Client Work Tab ========== -->
+    <div class="proj-tab-content" data-proj-panel="clientwork">
+      <div class="proj-cw-header">
+        <span class="proj-cw-header-icon">&#128444;&#65039;</span>
+        <span>Website Portfolio &mdash; Thumbnail View</span>
+      </div>
+      <div class="proj-cw-grid">
+        {websitePortfolio.map((site) => (
+          <div class="proj-cw-card">
+            <div class="proj-cw-thumb-frame win95-sunken">
+              <img src={site.image} alt={site.title} class="proj-cw-thumb" loading="lazy" decoding="async" />
+            </div>
+            <div class="proj-cw-label">{site.title}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <div class="proj-status-bar">
+    <div class="proj-status-cell proj-status-cell--main" id="proj-status-text">
+      {projects.length} open source project(s)
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Container */
+  .proj-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 280px;
+    background: var(--win95-grey);
+  }
+
+  /* ===== Tab Strip ===== */
+  .proj-tab-strip {
+    display: flex;
+    gap: 0;
+    padding: 4px 6px 0 6px;
+    background: var(--win95-grey);
+    flex-shrink: 0;
+  }
+
+  .proj-tab {
+    padding: 3px 12px 4px 12px;
+    background: var(--win95-grey);
+    border: 2px solid;
+    border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+    border-bottom: none;
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+    z-index: 0;
+    margin-right: 1px;
+    user-select: none;
+  }
+
+  .proj-tab:hover:not(.active) {
+    background: #d4d4d4;
+  }
+
+  .proj-tab.active {
+    background: var(--win95-grey);
+    border-bottom: 2px solid var(--win95-grey);
+    z-index: 2;
+    top: 2px;
+    padding-bottom: 5px;
+    font-weight: bold;
+  }
+
+  /* ===== Tab Body (raised panel below tabs) ===== */
+  .proj-tab-body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    padding: 10px;
+    margin: 0 2px;
+  }
+
+  .proj-tab-content {
+    display: none;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .proj-tab-content.active {
+    display: block;
+  }
+
+  /* ===== OPEN SOURCE TAB ===== */
+  .proj-os-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .proj-os-card {
+    background: var(--win95-grey);
+    border: 2px solid;
+    border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+    box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .proj-os-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .proj-os-icon-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .proj-os-icon-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  .proj-os-icon-emoji {
+    font-size: 36px;
+    line-height: 1;
+  }
+
+  .proj-os-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .proj-os-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--win95-black);
+  }
+
+  .proj-os-desc-area {
+    padding: 6px;
+    max-height: 90px;
+    overflow-y: auto;
+    background: var(--win95-white);
+  }
+
+  .proj-os-desc {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .proj-os-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .proj-os-tech-badge {
+    background: var(--win95-grey);
+    border: 2px solid;
+    border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+    box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+    padding: 1px 5px;
+    font-size: 10px;
+    white-space: nowrap;
+    cursor: default;
+  }
+
+  .proj-os-link-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--win95-black);
+    font-size: 11px;
+    font-family: inherit;
+    padding: 2px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+
+  /* ===== CASE STUDIES TAB ===== */
+  .proj-cs-groupbox {
+    border: 1px solid var(--win95-darkgrey);
+    box-shadow: 1px 1px 0 var(--win95-white);
+    padding: 0 8px 8px 8px;
+    margin: 0 0 10px 0;
+  }
+
+  .proj-cs-legend {
+    font-size: 11px;
+    padding: 0;
+  }
+
+  .proj-cs-toggle {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 2px 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--win95-black);
+  }
+  .proj-cs-toggle:hover {
+    color: var(--win95-navy);
+  }
+
+  .proj-cs-toggle-icon {
+    font-size: 8px;
+    width: 10px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .proj-cs-body {
+    display: none;
+    padding-top: 6px;
+  }
+  .proj-cs-body.open {
+    display: block;
+  }
+
+  .proj-cs-image-frame {
+    margin-bottom: 8px;
+    padding: 2px;
+    max-height: 160px;
+    overflow: hidden;
+  }
+
+  .proj-cs-image {
+    width: 100%;
+    max-height: 156px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .proj-cs-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .proj-cs-section-label {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .proj-cs-section-icon {
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .proj-cs-section-text {
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 5px 6px;
+    background: var(--win95-white);
+  }
+
+  .proj-cs-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 4px;
+  }
+
+  .proj-cs-tech-badge {
+    background: var(--win95-grey);
+    border: 2px solid;
+    border-color: var(--win95-white) var(--win95-shadow-dark) var(--win95-shadow-dark) var(--win95-white);
+    box-shadow: inset 1px 1px 0 var(--win95-shadow-light), inset -1px -1px 0 var(--win95-darkgrey);
+    padding: 1px 5px;
+    font-size: 10px;
+    white-space: nowrap;
+    cursor: default;
+  }
+
+  /* ===== CLIENT WORK TAB ===== */
+  .proj-cw-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--win95-darkgrey);
+    box-shadow: 0 1px 0 var(--win95-white);
+  }
+
+  .proj-cw-header-icon {
+    font-size: 14px;
+  }
+
+  .proj-cw-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px;
+    padding: 4px;
+  }
+
+  .proj-cw-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: default;
+  }
+
+  .proj-cw-thumb-frame {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: 2px;
+    overflow: hidden;
+  }
+
+  .proj-cw-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .proj-cw-label {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding: 2px 4px;
+    line-height: 1.3;
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+
+  /* ===== Status Bar ===== */
+  .proj-status-bar {
+    display: flex;
+    gap: 2px;
+    padding: 2px 3px;
+    background: var(--win95-grey);
+    border-top: 1px solid var(--win95-shadow-light);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .proj-status-cell {
+    border: 1px solid;
+    border-color: var(--win95-darkgrey) var(--win95-white) var(--win95-white) var(--win95-darkgrey);
+    padding: 1px 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .proj-status-cell--main {
+    flex: 1;
+  }
+</style>
+
+<script>
+  function initProjectsTabs() {
+    const container = document.querySelector('.proj-tab-strip');
+    if (!container) return;
+
+    // Avoid re-initializing
+    if (container.getAttribute('data-initialized') === 'true') return;
+    container.setAttribute('data-initialized', 'true');
+
+    const tabs = container.querySelectorAll<HTMLElement>('[data-proj-tab]');
+    const panels = document.querySelectorAll<HTMLElement>('[data-proj-panel]');
+    const statusText = document.getElementById('proj-status-text');
+
+    const statusMessages: Record<string, string> = {
+      opensource: `${document.querySelectorAll('.proj-os-card').length} open source project(s)`,
+      casestudies: `${document.querySelectorAll('.proj-cs-groupbox').length} case study(s)`,
+      clientwork: `${document.querySelectorAll('.proj-cw-card').length} client website(s)`,
+    };
+
+    // Tab switching
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-proj-tab');
+        if (!target) return;
+
+        tabs.forEach((t) => t.classList.remove('active'));
+        panels.forEach((p) => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        const panel = document.querySelector<HTMLElement>(`[data-proj-panel="${target}"]`);
+        if (panel) panel.classList.add('active');
+
+        if (statusText && statusMessages[target]) {
+          statusText.textContent = statusMessages[target];
+        }
+      });
+    });
+
+    // Case study expand/collapse
+    const csToggles = document.querySelectorAll<HTMLElement>('[data-cs-toggle]');
+    csToggles.forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const idx = toggle.getAttribute('data-cs-toggle');
+        if (idx === null) return;
+
+        const body = document.querySelector<HTMLElement>(`[data-cs-body="${idx}"]`);
+        const icon = toggle.querySelector('.proj-cs-toggle-icon');
+        if (!body || !icon) return;
+
+        const isOpen = body.classList.contains('open');
+        body.classList.toggle('open');
+        icon.textContent = isOpen ? '\u25B6' : '\u25BC';
+      });
+    });
+  }
+
+  // Initialize on load
+  initProjectsTabs();
+
+  // Also handle Astro client-side navigation
+  document.addEventListener('astro:page-load', initProjectsTabs);
+</script>
