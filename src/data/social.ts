@@ -17,7 +17,7 @@ export const socialLinks: SocialLink[] = [
   },
   {
     label: 'Bluesky',
-    url: 'https://bsky.app/profile/naterchrdsn.bsky.social',
+    url: 'https://bsky.app/profile/naterichardson.com',
     icon: 'bluesky',
   },
 ];

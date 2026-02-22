@@ -107,6 +107,14 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
     if (!screen) return;
     screen.classList.remove('hidden');
     screen.classList.add('open');
+
+    // Track virtual page view in Matomo
+    const title = screen.querySelector('.pda-app-title')?.textContent || id;
+    const _paq = ((window as any)._paq = (window as any)._paq || []);
+    _paq.push(['setCustomUrl', '/' + id]);
+    _paq.push(['setDocumentTitle', title]);
+    _paq.push(['trackPageView']);
+
     // Move focus into the app screen for accessibility
     const focusTarget = screen.querySelector<HTMLElement>('.pda-app-title, [tabindex], button, a');
     if (focusTarget) focusTarget.focus();
@@ -117,6 +125,13 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
     if (!screen) return;
     screen.classList.remove('open');
     screen.classList.add('hidden');
+
+    // Track return to homepage in Matomo
+    const _paq = ((window as any)._paq = (window as any)._paq || []);
+    _paq.push(['setCustomUrl', '/']);
+    _paq.push(['setDocumentTitle', 'Nate Richardson | Frontend Architect & Developer']);
+    _paq.push(['trackPageView']);
+
     // Return focus to the triggering icon
     const trigger = document.querySelector<HTMLElement>(`[data-app-target="${id}"]`);
     if (trigger) trigger.focus();
