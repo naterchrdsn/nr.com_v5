@@ -206,6 +206,12 @@
     setTimeout(startEasterEggs, delay);
   }
 
+  // Matomo event tracking helper
+  function trackEvent(action: string, name?: string) {
+    const _paq = ((window as any)._paq = (window as any)._paq || []);
+    _paq.push(['trackEvent', 'Easter Egg', action, name]);
+  }
+
   function startEasterEggs() {
     initClippy();
     initKonami();
@@ -244,9 +250,11 @@
 
       container.classList.add('show');
       sessionStorage.setItem('clippy-seen', '1');
+      trackEvent('Clippy', 'Appeared');
 
       // "Yes!" opens contact window via the window manager
       document.getElementById('clippy-yes')?.addEventListener('click', async () => {
+        trackEvent('Clippy', 'Clicked Yes');
         dismissClippy(container);
         const { openWindow } = await import('./window-manager');
         openWindow('contact');
@@ -254,6 +262,7 @@
 
       // Dismiss
       document.getElementById('clippy-dismiss')?.addEventListener('click', () => {
+        trackEvent('Clippy', 'Dismissed');
         dismissClippy(container);
       });
 
@@ -323,6 +332,7 @@
   }
 
   function activateKonami(overlay: HTMLElement) {
+    trackEvent('Konami Code', 'Activated');
     overlay.style.display = 'flex';
 
     // Toggle desktop pattern
@@ -374,6 +384,7 @@
       if (clickCount >= 10) {
         clickCount = 0;
         sessionStorage.setItem('bsod-seen', '1');
+        trackEvent('BSOD', 'Triggered');
         showBSOD(bsod);
       }
     });
@@ -411,6 +422,7 @@
       }
 
       e.preventDefault();
+      trackEvent('Context Menu', 'Opened');
 
       // Position menu at cursor
       const x = Math.min(e.clientX, window.innerWidth - 170);
@@ -638,6 +650,7 @@
       if (document.getElementById('konami-overlay')?.style.display === 'flex') return;
       if (document.getElementById('boot-screen')) return;
 
+      trackEvent('Screensaver', 'Activated');
       active = true;
       canvas.style.display = 'block';
       canvas.width = window.innerWidth;

@@ -33,6 +33,14 @@ export function initWindowManager() {
   initShutdown();
 }
 
+// --- Matomo virtual page view tracking ---
+function trackPageView(id: string, title: string) {
+  const _paq = ((window as any)._paq = (window as any)._paq || []);
+  _paq.push(['setCustomUrl', '/' + id]);
+  _paq.push(['setDocumentTitle', title]);
+  _paq.push(['trackPageView']);
+}
+
 // --- Open a window ---
 export function openWindow(id: string) {
   const win = document.getElementById(`window-${id}`);
@@ -46,6 +54,10 @@ export function openWindow(id: string) {
   win.classList.remove('hidden');
   windowState[id].open = true;
   windowState[id].minimized = false;
+
+  // Track virtual page view in Matomo
+  const title = win.querySelector('.win95-titlebar-text')?.textContent || id;
+  trackPageView(id, title);
 
   focusWindow(id);
   updateTaskbar();
@@ -68,6 +80,10 @@ export function closeWindow(id: string) {
   if (activeWindowId === id) activeWindowId = null;
   updateTaskbar();
   updateTitleBarStates();
+
+  // If no windows remain open, track return to homepage
+  const anyOpen = Object.values(windowState).some((s) => s.open || s.minimized);
+  if (!anyOpen) trackPageView('', 'Nate Richardson | Frontend Architect & Developer');
 }
 
 // --- Minimize a window ---
