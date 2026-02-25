@@ -18,6 +18,21 @@ export interface CaseStudy {
 
 export const projects: Project[] = [
   {
+    title: 'Nachos',
+    description:
+      'Nachos is a modular, Docker-native AI assistant framework designed to be self-hosted and infinitely customizable. It uses a microservices architecture with NATS message bus for inter-service communication, supporting multiple LLM providers (Claude, GPT, Ollama) and messaging platforms (Slack, Discord, Telegram, WhatsApp, WebChat). The framework features container-per-component isolation, a TOML-based configuration system, built-in security policies with DLP scanning, and a CLI for stack management. Built as a monorepo with shared packages for configuration, state management, and tool interfaces.',
+    technologies: [
+      'TypeScript',
+      'Docker',
+      'NATS',
+      'Node.js',
+      'Hono',
+      'pnpm',
+    ],
+    link: 'https://github.com/Nacho-Labs-LLC/nachos',
+    image: '/images/portfolio/nachos.png',
+  },
+  {
     title: 'Spudnik',
     description:
       'Spudnik is a discord bot focused on guild management and adding interesting and useful functionality to your server. It was built on top of some of the most popular and widely used frameworks for extendibility and written with organization and customization in mind. At the bot\'s peak, it was in almost 200 servers and was successfully scaled to handle thousands of concurrent user interactions on Heroku. With the bot being depended on by so many users, I took the time to implement excellent CI/CD practices and downtime was minimal.',
@@ -53,6 +68,17 @@ export const websitePortfolio = [
   { title: 'GReY', image: '/images/portfolio/GReY_all.png' },
   { title: 'HACC Foundation', image: '/images/portfolio/HACC-Foundation.png' },
   { title: 'Revolving Bear', image: '/images/portfolio/Revolving-Bear.png' },
+];
+
+export const clientLogos: string[] = [
+  '/images/client_logos/cuda_logo.png',
+  '/images/client_logos/dancy_chiro_logo.png',
+  '/images/client_logos/dbp_logo.png',
+  '/images/client_logos/gadg_logo.png',
+  '/images/client_logos/grey_logo.png',
+  '/images/client_logos/kh_logo.png',
+  '/images/client_logos/pg_logo.png',
+  '/images/client_logos/tiig_logo.png',
 ];
 
 export const caseStudies: CaseStudy[] = [
