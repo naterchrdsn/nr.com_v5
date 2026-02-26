@@ -1,5 +1,5 @@
 ---
-import { projects, websitePortfolio, caseStudies } from '../../data/projects';
+import { projects, websitePortfolio, caseStudies, clientLogos } from '../../data/projects';
 ---
 
 <div class="proj-container win95-text">
@@ -119,6 +119,19 @@ import { projects, websitePortfolio, caseStudies } from '../../data/projects';
               <img src={site.image} alt={site.title} class="proj-cw-thumb" loading="lazy" decoding="async" />
             </div>
             <div class="proj-cw-label">{site.title}</div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Brands I've Worked With -->
+      <div class="proj-cw-brands-header">
+        <span class="proj-cw-header-icon">&#128188;</span>
+        <span>Brands I've Worked With</span>
+      </div>
+      <div class="proj-cw-brands-grid">
+        {clientLogos.map((logo) => (
+          <div class="proj-cw-brand-item win95-sunken">
+            <img src={logo} alt="" class="proj-cw-brand-logo" loading="lazy" decoding="async" />
           </div>
         ))}
       </div>
@@ -462,6 +475,41 @@ import { projects, websitePortfolio, caseStudies } from '../../data/projects';
     word-wrap: break-word;
   }
 
+  /* ===== Brands Section ===== */
+  .proj-cw-brands-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 14px 0 10px 0;
+    font-size: 11px;
+    font-weight: bold;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--win95-darkgrey);
+    box-shadow: 0 1px 0 var(--win95-white);
+  }
+
+  .proj-cw-brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    padding: 4px;
+  }
+
+  .proj-cw-brand-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: var(--win95-navy);
+    aspect-ratio: 1;
+  }
+
+  .proj-cw-brand-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
   /* ===== Status Bar ===== */
   .proj-status-bar {
     display: flex;
@@ -489,56 +537,60 @@ import { projects, websitePortfolio, caseStudies } from '../../data/projects';
 
 <script>
   function initProjectsTabs() {
-    const container = document.querySelector('.proj-tab-strip');
-    if (!container) return;
+    const containers = document.querySelectorAll<HTMLElement>('.proj-container');
 
-    // Avoid re-initializing
-    if (container.getAttribute('data-initialized') === 'true') return;
-    container.setAttribute('data-initialized', 'true');
+    containers.forEach((root) => {
+      const tabStrip = root.querySelector('.proj-tab-strip');
+      if (!tabStrip) return;
 
-    const tabs = container.querySelectorAll<HTMLElement>('[data-proj-tab]');
-    const panels = document.querySelectorAll<HTMLElement>('[data-proj-panel]');
-    const statusText = document.getElementById('proj-status-text');
+      // Avoid re-initializing
+      if (tabStrip.getAttribute('data-initialized') === 'true') return;
+      tabStrip.setAttribute('data-initialized', 'true');
 
-    const statusMessages: Record<string, string> = {
-      opensource: `${document.querySelectorAll('.proj-os-card').length} open source project(s)`,
-      casestudies: `${document.querySelectorAll('.proj-cs-groupbox').length} case study(s)`,
-      clientwork: `${document.querySelectorAll('.proj-cw-card').length} client website(s)`,
-    };
+      const tabs = tabStrip.querySelectorAll<HTMLElement>('[data-proj-tab]');
+      const panels = root.querySelectorAll<HTMLElement>('[data-proj-panel]');
+      const statusText = root.querySelector<HTMLElement>('#proj-status-text');
 
-    // Tab switching
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const target = tab.getAttribute('data-proj-tab');
-        if (!target) return;
+      const statusMessages: Record<string, string> = {
+        opensource: `${root.querySelectorAll('.proj-os-card').length} open source project(s)`,
+        casestudies: `${root.querySelectorAll('.proj-cs-groupbox').length} case study(s)`,
+        clientwork: `${root.querySelectorAll('.proj-cw-card').length} client website(s)`,
+      };
 
-        tabs.forEach((t) => t.classList.remove('active'));
-        panels.forEach((p) => p.classList.remove('active'));
+      // Tab switching
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const target = tab.getAttribute('data-proj-tab');
+          if (!target) return;
 
-        tab.classList.add('active');
-        const panel = document.querySelector<HTMLElement>(`[data-proj-panel="${target}"]`);
-        if (panel) panel.classList.add('active');
+          tabs.forEach((t) => t.classList.remove('active'));
+          panels.forEach((p) => p.classList.remove('active'));
 
-        if (statusText && statusMessages[target]) {
-          statusText.textContent = statusMessages[target];
-        }
+          tab.classList.add('active');
+          const panel = root.querySelector<HTMLElement>(`[data-proj-panel="${target}"]`);
+          if (panel) panel.classList.add('active');
+
+          if (statusText && statusMessages[target]) {
+            statusText.textContent = statusMessages[target];
+          }
+        });
       });
-    });
 
-    // Case study expand/collapse
-    const csToggles = document.querySelectorAll<HTMLElement>('[data-cs-toggle]');
-    csToggles.forEach((toggle) => {
-      toggle.addEventListener('click', () => {
-        const idx = toggle.getAttribute('data-cs-toggle');
-        if (idx === null) return;
+      // Case study expand/collapse
+      const csToggles = root.querySelectorAll<HTMLElement>('[data-cs-toggle]');
+      csToggles.forEach((toggle) => {
+        toggle.addEventListener('click', () => {
+          const idx = toggle.getAttribute('data-cs-toggle');
+          if (idx === null) return;
 
-        const body = document.querySelector<HTMLElement>(`[data-cs-body="${idx}"]`);
-        const icon = toggle.querySelector('.proj-cs-toggle-icon');
-        if (!body || !icon) return;
+          const body = root.querySelector<HTMLElement>(`[data-cs-body="${idx}"]`);
+          const icon = toggle.querySelector('.proj-cs-toggle-icon');
+          if (!body || !icon) return;
 
-        const isOpen = body.classList.contains('open');
-        body.classList.toggle('open');
-        icon.textContent = isOpen ? '\u25B6' : '\u25BC';
+          const isOpen = body.classList.contains('open');
+          body.classList.toggle('open');
+          icon.textContent = isOpen ? '\u25B6' : '\u25BC';
+        });
       });
     });
   }
