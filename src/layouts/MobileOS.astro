@@ -76,21 +76,25 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
 
 <script>
   function initMobileOS() {
-    let lastTrigger: HTMLElement | null = null;
+    if (!window.matchMedia('(max-width: 767px)').matches) return;
+
+    const root = document.getElementById('mobile-os');
+    if (!root) return;
+    if (root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
 
     // Open app when icon tapped
-    document.querySelectorAll<HTMLElement>('[data-app-target]').forEach((icon) => {
+    root.querySelectorAll<HTMLElement>('[data-app-target]').forEach((icon) => {
       icon.addEventListener('click', () => {
         const appId = icon.dataset.appTarget;
         if (appId) {
-          lastTrigger = icon;
           openApp(appId);
         }
       });
     });
 
     // Back / Close buttons
-    document.addEventListener('click', (e) => {
+    root.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.closest('[data-action="back"]') || target.closest('[data-action="close-app"]')) {
         const screen = target.closest<HTMLElement>('.pda-app-screen');
@@ -137,7 +141,6 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
     if (trigger) trigger.focus();
   }
 
-  if (window.matchMedia('(max-width: 767px)').matches) {
-    initMobileOS();
-  }
+  initMobileOS();
+  document.addEventListener('astro:page-load', initMobileOS);
 </script>

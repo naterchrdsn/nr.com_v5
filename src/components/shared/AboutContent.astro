@@ -3,10 +3,10 @@
 
 <div class="about-dialog win95-text">
   <!-- Tab Bar -->
-  <div class="about-tabs">
-    <button class="win95-tab active" data-about-tab="general">General</button>
-    <button class="win95-tab" data-about-tab="personal">Personal</button>
-    <button class="win95-tab" data-about-tab="skills">Skills</button>
+  <div class="about-tabs" role="tablist" aria-label="About tabs">
+    <button class="win95-tab active" data-about-tab="general" type="button">General</button>
+    <button class="win95-tab" data-about-tab="personal" type="button">Personal</button>
+    <button class="win95-tab" data-about-tab="skills" type="button">Skills</button>
   </div>
 
   <!-- Tab Content Area (raised panel that sits behind the active tab) -->
@@ -54,7 +54,7 @@
 
       <!-- Tagline in a sunken status area -->
       <div class="about-tagline win95-sunken">
-        I believe great software (like great food) should be crafted with care, built to last, and enjoyed by the people using it.
+        I believe great software (like great food) should be crafted with care and enjoyed by the people using it.
       </div>
     </div>
 
@@ -211,6 +211,10 @@
     z-index: 3;
     padding-top: 2px;
     margin-top: -2px;
+  }
+  .about-tabs .win95-tab:focus-visible {
+    outline: 1px dotted var(--win95-black);
+    outline-offset: -4px;
   }
 
   /* --- Tab Body (the raised panel beneath the tabs) --- */
@@ -408,27 +412,93 @@
 </style>
 
 <script>
+  let aboutUidCounter = 0;
+
+  function activateAboutTab(container: HTMLElement, tab: HTMLElement) {
+    const tabs = Array.from(container.querySelectorAll<HTMLElement>('[data-about-tab]'));
+    const panels = Array.from(container.querySelectorAll<HTMLElement>('[data-about-panel]'));
+    const target = tab.dataset.aboutTab;
+
+    tabs.forEach((t) => {
+      const isActive = t === tab;
+      t.classList.toggle('active', isActive);
+      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      t.tabIndex = isActive ? 0 : -1;
+    });
+    panels.forEach((p) => p.classList.remove('active'));
+
+    if (!target) return;
+    const panel = container.querySelector<HTMLElement>(`[data-about-panel="${target}"]`);
+    if (panel) panel.classList.add('active');
+  }
+
   function initAboutTabs() {
-    const tabs = document.querySelectorAll<HTMLElement>('[data-about-tab]');
-    const panels = document.querySelectorAll<HTMLElement>('[data-about-panel]');
+    const containers = document.querySelectorAll<HTMLElement>('.about-dialog');
+    if (!containers.length) return;
 
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.aboutTab;
+    containers.forEach((container) => {
+      if (container.dataset.initialized === 'true') return;
+      container.dataset.initialized = 'true';
 
-        // Deactivate all tabs and panels
-        tabs.forEach((t) => t.classList.remove('active'));
-        panels.forEach((p) => p.classList.remove('active'));
+      const tabs = container.querySelectorAll<HTMLElement>('[data-about-tab]');
+      const panels = container.querySelectorAll<HTMLElement>('[data-about-panel]');
 
-        // Activate clicked tab and matching panel
-        tab.classList.add('active');
-        const panel = document.querySelector<HTMLElement>(`[data-about-panel="${target}"]`);
-        if (panel) panel.classList.add('active');
+      if (!tabs.length || !panels.length) return;
+
+      const uid = container.dataset.aboutUid || `about-${++aboutUidCounter}`;
+      container.dataset.aboutUid = uid;
+
+      tabs.forEach((tab, index) => {
+        const target = tab.dataset.aboutTab || String(index);
+        const tabId = `${uid}-tab-${target}`;
+        const panelId = `${uid}-panel-${target}`;
+
+        tab.id = tab.id || tabId;
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-controls', panelId);
+
+        const panel = container.querySelector<HTMLElement>(`[data-about-panel="${target}"]`);
+        if (panel) {
+          panel.id = panel.id || panelId;
+          panel.setAttribute('role', 'tabpanel');
+          panel.setAttribute('aria-labelledby', tab.id);
+        }
+      });
+
+      const initialTab = container.querySelector<HTMLElement>('[data-about-tab].active') || tabs[0];
+      if (initialTab) activateAboutTab(container, initialTab);
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => activateAboutTab(container, tab));
+
+        tab.addEventListener('keydown', (event) => {
+          const currentIndex = Array.from(tabs).indexOf(tab);
+          if (currentIndex < 0) return;
+
+          let nextIndex: number | null = null;
+          if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+          if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+          if (event.key === 'Home') nextIndex = 0;
+          if (event.key === 'End') nextIndex = tabs.length - 1;
+
+          if (nextIndex !== null) {
+            event.preventDefault();
+            const nextTab = tabs[nextIndex];
+            activateAboutTab(container, nextTab);
+            nextTab.focus();
+            return;
+          }
+
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            activateAboutTab(container, tab);
+          }
+        });
       });
     });
   }
 
   // Run on load and also on Astro page transitions
   initAboutTabs();
-  document.addEventListener('astro:after-swap', initAboutTabs);
+  document.addEventListener('astro:page-load', initAboutTabs);
 </script>

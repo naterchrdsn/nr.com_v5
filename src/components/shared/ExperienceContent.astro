@@ -14,7 +14,7 @@ import { experience } from '../../data/experience';
   <!-- Address / path bar -->
   <div class="exp-address-bar">
     <span class="exp-address-label">Address</span>
-    <div class="exp-address-field win95-sunken" id="exp-address-field">
+    <div class="exp-address-field win95-sunken" data-exp-address>
       C:\Experience\{experience[0].company}
     </div>
     <button class="win95-button exp-go-btn" type="button">&#9658;</button>
@@ -109,7 +109,7 @@ import { experience } from '../../data/experience';
     <div class="exp-status-cell exp-status-cell--main" id="exp-status-objects">
       {experience.length} object(s)
     </div>
-    <div class="exp-status-cell exp-status-cell--date" id="exp-status-date">
+    <div class="exp-status-cell exp-status-cell--date" data-exp-status-date>
       {experience[0].dateRange}
     </div>
   </div>
@@ -439,65 +439,70 @@ import { experience } from '../../data/experience';
 
 <script>
   function initExperienceExplorer() {
-    const treePane = document.querySelector('.exp-tree-pane');
-    if (!treePane) return;
+    const containers = document.querySelectorAll<HTMLElement>('.exp-container');
+    if (!containers.length) return;
 
-    // Avoid re-initializing
-    if (treePane.getAttribute('data-initialized') === 'true') return;
-    treePane.setAttribute('data-initialized', 'true');
+    containers.forEach((container) => {
+      const treePane = container.querySelector<HTMLElement>('.exp-tree-pane');
+      if (!treePane) return;
 
-    const folders = treePane.querySelectorAll<HTMLElement>('[data-company-idx]');
-    const details = document.querySelectorAll<HTMLElement>('[data-detail-idx]');
-    const addressField = document.getElementById('exp-address-field');
-    const statusDate = document.getElementById('exp-status-date');
+      // Avoid re-initializing per instance
+      if (treePane.dataset.initialized === 'true') return;
+      treePane.dataset.initialized = 'true';
 
-    if (!folders.length) return;
+      const folders = treePane.querySelectorAll<HTMLElement>('[data-company-idx]');
+      const details = container.querySelectorAll<HTMLElement>('[data-detail-idx]');
+      const addressField = container.querySelector<HTMLElement>('[data-exp-address]');
+      const statusDate = container.querySelector<HTMLElement>('[data-exp-status-date]');
 
-    folders.forEach((folder) => {
-      folder.addEventListener('click', () => {
-        const idx = folder.getAttribute('data-company-idx');
-        if (idx === null) return;
+      if (!folders.length) return;
 
-        const companyName = folder.getAttribute('data-company-name') || '';
-        const dateRange = folder.getAttribute('data-company-date') || '';
+      folders.forEach((folder) => {
+        folder.addEventListener('click', () => {
+          const idx = folder.getAttribute('data-company-idx');
+          if (idx === null) return;
 
-        // Deselect all folders, collapse all
-        folders.forEach((f) => {
-          f.classList.remove('selected');
-          const tog = f.querySelector('.exp-tree-toggle-area');
-          const ico = f.querySelector('.exp-tree-icon-folder');
-          if (tog) tog.textContent = '\u25B6';
-          if (ico) ico.textContent = '\uD83D\uDCC1';
+          const companyName = folder.getAttribute('data-company-name') || '';
+          const dateRange = folder.getAttribute('data-company-date') || '';
+
+          // Deselect all folders, collapse all
+          folders.forEach((f) => {
+            f.classList.remove('selected');
+            const tog = f.querySelector('.exp-tree-toggle-area');
+            const ico = f.querySelector('.exp-tree-icon-folder');
+            if (tog) tog.textContent = '\u25B6';
+            if (ico) ico.textContent = '\uD83D\uDCC1';
+          });
+          container.querySelectorAll('.exp-tree-children').forEach((c) => c.classList.remove('open'));
+
+          // Select this folder, expand it
+          folder.classList.add('selected');
+          const toggle = folder.querySelector('.exp-tree-toggle-area');
+          const icon = folder.querySelector('.exp-tree-icon-folder');
+          if (toggle) toggle.textContent = '\u25BC';
+          if (icon) icon.textContent = '\uD83D\uDCC2';
+
+          const branch = folder.closest('.exp-tree-branch');
+          if (branch) {
+            const children = branch.querySelector('.exp-tree-children');
+            if (children) children.classList.add('open');
+          }
+
+          // Show corresponding detail panel
+          details.forEach((d) => d.classList.remove('active'));
+          const target = container.querySelector<HTMLElement>(`[data-detail-idx="${idx}"]`);
+          if (target) target.classList.add('active');
+
+          // Update address bar
+          if (addressField) {
+            addressField.textContent = `C:\\Experience\\${companyName}`;
+          }
+
+          // Update status bar date
+          if (statusDate) {
+            statusDate.textContent = dateRange;
+          }
         });
-        document.querySelectorAll('.exp-tree-children').forEach((c) => c.classList.remove('open'));
-
-        // Select this folder, expand it
-        folder.classList.add('selected');
-        const toggle = folder.querySelector('.exp-tree-toggle-area');
-        const icon = folder.querySelector('.exp-tree-icon-folder');
-        if (toggle) toggle.textContent = '\u25BC';
-        if (icon) icon.textContent = '\uD83D\uDCC2';
-
-        const branch = folder.closest('.exp-tree-branch');
-        if (branch) {
-          const children = branch.querySelector('.exp-tree-children');
-          if (children) children.classList.add('open');
-        }
-
-        // Show corresponding detail panel
-        details.forEach((d) => d.classList.remove('active'));
-        const target = document.querySelector<HTMLElement>(`[data-detail-idx="${idx}"]`);
-        if (target) target.classList.add('active');
-
-        // Update address bar
-        if (addressField) {
-          addressField.textContent = `C:\\Experience\\${companyName}`;
-        }
-
-        // Update status bar date
-        if (statusDate) {
-          statusDate.textContent = dateRange;
-        }
       });
     });
   }

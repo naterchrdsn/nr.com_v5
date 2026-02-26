@@ -13,7 +13,7 @@ const { id, title } = Astro.props;
     <button class="pda-back-btn" data-action="back" aria-label="Back">
       ◄ Back
     </button>
-    <span class="pda-app-title">{title}</span>
+    <span class="pda-app-title" tabindex="-1">{title}</span>
     <button class="pda-close-btn" data-action="close-app" aria-label="Close">
       ✕
     </button>
