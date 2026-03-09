@@ -3,6 +3,7 @@ export interface Project {
   description: string;
   technologies: string[];
   link?: string;
+  website?: string;
   image?: string;
 }
 
@@ -17,6 +18,20 @@ export interface CaseStudy {
 }
 
 export const projects: Project[] = [
+  {
+    title: 'angular-grab',
+    description:
+      'A developer tool that lets you grab any element in your Angular app and give it to AI coding agents. Point at any UI element, press Cmd+C / Ctrl+C, and get the component name, file path, and HTML source copied to your clipboard — ready to paste into Claude, ChatGPT, Copilot, or any AI assistant. Features include full Angular component stack traces with source locations, freeze mode for grabbing tooltips and hover menus, a floating toolbar with history and theme controls, a plugin system for custom actions and hooks, and crosshair guidelines during selection. Zero production impact — automatically disabled outside dev mode. Supports esbuild, Vite, and Webpack via dedicated plugins, plus custom Angular CLI builders.',
+    technologies: [
+      'TypeScript',
+      'Angular',
+      'esbuild',
+      'Vite',
+      'Webpack',
+    ],
+    link: 'https://github.com/nacho-labs-llc/angular-grab',
+    website: 'https://angular-grab.com',
+  },
   {
     title: 'Nachos',
     description:

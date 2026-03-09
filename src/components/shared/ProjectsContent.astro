@@ -29,12 +29,19 @@ import { projects, websitePortfolio, caseStudies, clientLogos } from '../../data
               </div>
               <div class="proj-os-card-info">
                 <div class="proj-os-name">{project.title}</div>
-                <!-- GitHub button -->
-                {project.link && (
-                  <a href={project.link} target="_blank" rel="noopener" class="proj-os-link-btn win95-button">
-                    &#127760; View on GitHub
-                  </a>
-                )}
+                <!-- Project links -->
+                <div class="proj-os-links">
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener" class="proj-os-link-btn win95-button">
+                      &#127760; View on GitHub
+                    </a>
+                  )}
+                  {project.website && (
+                    <a href={project.website} target="_blank" rel="noopener" class="proj-os-link-btn win95-button">
+                      &#128187; Website
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
             <!-- Description in a sunken text area -->
@@ -302,6 +309,12 @@ import { projects, websitePortfolio, caseStudies, clientLogos } from '../../data
     cursor: default;
   }
 
+  .proj-os-links {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
   .proj-os-link-btn {
     display: inline-block;
     text-decoration: none;
@@ -311,7 +324,6 @@ import { projects, websitePortfolio, caseStudies, clientLogos } from '../../data
     padding: 2px 10px;
     cursor: pointer;
     white-space: nowrap;
-    align-self: flex-start;
   }
 
   /* ===== CASE STUDIES TAB ===== */
@@ -573,6 +585,8 @@ import { projects, websitePortfolio, caseStudies, clientLogos } from '../../data
           if (statusText && statusMessages[target]) {
             statusText.textContent = statusMessages[target];
           }
+
+          (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Projects', event_action: 'tab', event_name: target });
         });
       });
 
@@ -590,14 +604,34 @@ import { projects, websitePortfolio, caseStudies, clientLogos } from '../../data
           const isOpen = body.classList.contains('open');
           body.classList.toggle('open');
           icon.textContent = isOpen ? '\u25B6' : '\u25BC';
+
+          const csTitle = toggle.textContent?.trim() || `case-study-${idx}`;
+          (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Projects', event_action: isOpen ? 'collapse' : 'expand', event_name: csTitle });
         });
+      });
+    });
+  }
+
+  // Track outbound project links
+  function initProjectLinks() {
+    document.querySelectorAll<HTMLAnchorElement>('.proj-os-link-btn').forEach((link) => {
+      if (link.dataset.tracked) return;
+      link.dataset.tracked = 'true';
+      link.addEventListener('click', () => {
+        const projectName = link.closest('.proj-os-card')?.querySelector('.proj-os-name')?.textContent?.trim() || 'unknown';
+        const type = link.textContent?.includes('GitHub') ? 'github' : 'website';
+        (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Outbound', event_action: 'click', event_name: `project-${type}-${projectName}` });
       });
     });
   }
 
   // Initialize on load
   initProjectsTabs();
+  initProjectLinks();
 
   // Also handle Astro client-side navigation
-  document.addEventListener('astro:page-load', initProjectsTabs);
+  document.addEventListener('astro:page-load', () => {
+    initProjectsTabs();
+    initProjectLinks();
+  });
 </script>

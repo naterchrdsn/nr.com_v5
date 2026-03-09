@@ -21,7 +21,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 
 <BaseLayout title={`${post.data.title} | Nate Richardson`} description={post.data.description} canonicalPath={`/blog/${post.id}`}>
   <!-- Desktop: Notepad Window -->
-  <div class="hidden md:block" style="position: fixed; inset: 0; background: var(--win95-desktop-bg); overflow: auto;">
+  <div class="desktop-only" style="position: fixed; inset: 0; background: var(--win95-desktop-bg); overflow: auto;">
     <div class="win95-window" style="width: 700px; max-height: 80vh; margin: 40px auto; padding: 3px; display: flex; flex-direction: column;">
       <div class="win95-titlebar">
         <img src="/icons/blog.svg" alt="" class="win95-titlebar-icon pixelated" />
@@ -63,7 +63,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
   </div>
 
   <!-- Mobile: Full screen reader -->
-  <div class="md:hidden" style="height: 100vh; display: flex; flex-direction: column; background: var(--win95-grey);">
+  <div class="mobile-only" style="height: 100vh; display: flex; flex-direction: column; background: var(--win95-grey);">
     <div style="background: var(--win95-grey); border-bottom: 2px solid; border-color: #ffffff #c0c0c0 #808080 #c0c0c0; height: 28px; display: flex; align-items: center; padding: 0 4px; gap: 4px;">
       <a href="/blog" style="background: var(--win95-grey); border: 2px solid; border-color: #ffffff #404040 #404040 #ffffff; font-size: 10px; padding: 1px 6px; text-decoration: none; color: inherit; font-family: inherit;">◄ Back</a>
       <span style="flex: 1; font-weight: bold; font-size: 11px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{post.data.title}</span>
@@ -81,38 +81,76 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 
 <style>
   .blog-content :global(h1) {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
-    margin: 12px 0 6px 0;
+    margin: 16px 0 8px 0;
+    line-height: 1.3;
   }
   .blog-content :global(h2) {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
-    margin: 10px 0 4px 0;
+    margin: 20px 0 6px 0;
+    line-height: 1.3;
+  }
+  .blog-content :global(h3) {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 14px 0 4px 0;
   }
   .blog-content :global(p) {
-    margin: 6px 0;
+    margin: 8px 0;
+    line-height: 1.7;
   }
   .blog-content :global(code) {
-    background: #c0c0c0;
-    padding: 0 3px;
+    background: #e8e8e8;
+    padding: 1px 5px;
+    border-radius: 3px;
     font-size: 11px;
+    font-family: 'Courier New', monospace;
   }
   .blog-content :global(pre) {
-    background: #000;
-    color: #00ff00;
-    padding: 8px;
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 12px 14px;
     overflow-x: auto;
-    font-size: 11px;
-    margin: 8px 0;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 12px 0;
+    border-radius: 4px;
+  }
+  .blog-content :global(pre code) {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+    color: inherit;
   }
   .blog-content :global(a) {
-    color: #000080;
+    color: #0066cc;
     text-decoration: underline;
+  }
+  .blog-content :global(a:hover) {
+    color: #004499;
   }
   .blog-content :global(ul),
   .blog-content :global(ol) {
     padding-left: 20px;
-    margin: 6px 0;
+    margin: 8px 0;
+  }
+  .blog-content :global(li) {
+    margin: 4px 0;
+    line-height: 1.6;
+  }
+  .blog-content :global(strong) {
+    font-weight: bold;
+  }
+  .blog-content :global(em) {
+    font-style: italic;
+  }
+  .blog-content :global(blockquote) {
+    border-left: 3px solid #808080;
+    padding: 4px 12px;
+    margin: 10px 0;
+    color: #555;
   }
 </style>

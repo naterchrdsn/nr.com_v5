@@ -118,6 +118,7 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
     _paq.push(['setCustomUrl', '/' + id]);
     _paq.push(['setDocumentTitle', title]);
     _paq.push(['trackPageView']);
+    (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Mobile App', event_action: 'open', event_name: id });
 
     // Move focus into the app screen for accessibility
     const focusTarget = screen.querySelector<HTMLElement>('.pda-app-title, [tabindex], button, a');
@@ -135,6 +136,7 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
     _paq.push(['setCustomUrl', '/']);
     _paq.push(['setDocumentTitle', 'Nate Richardson | Frontend Architect & Developer']);
     _paq.push(['trackPageView']);
+    (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Mobile App', event_action: 'close', event_name: id });
 
     // Return focus to the triggering icon
     const trigger = document.querySelector<HTMLElement>(`[data-app-target="${id}"]`);

@@ -33,12 +33,16 @@ export function initWindowManager() {
   initShutdown();
 }
 
-// --- Matomo virtual page view tracking ---
+// --- Matomo tracking helpers ---
 function trackPageView(id: string, title: string) {
   const _paq = ((window as any)._paq = (window as any)._paq || []);
   _paq.push(['setCustomUrl', '/' + id]);
   _paq.push(['setDocumentTitle', title]);
   _paq.push(['trackPageView']);
+}
+
+function trackEvent(category: string, action: string, name?: string) {
+  (window as any)._mtm?.push({ event: 'custom_event', event_category: category, event_action: action, event_name: name });
 }
 
 // --- Open a window ---
@@ -58,6 +62,7 @@ export function openWindow(id: string) {
   // Track virtual page view in Matomo
   const title = win.querySelector('.win95-titlebar-text')?.textContent || id;
   trackPageView(id, title);
+  trackEvent('Window', 'open', id);
 
   focusWindow(id);
   updateTaskbar();
@@ -77,6 +82,7 @@ export function closeWindow(id: string) {
     win.classList.remove('maximized');
   }
 
+  trackEvent('Window', 'close', id);
   if (activeWindowId === id) activeWindowId = null;
   updateTaskbar();
   updateTitleBarStates();
@@ -94,6 +100,7 @@ export function minimizeWindow(id: string) {
   win.classList.remove('open');
   win.classList.add('hidden');
   if (windowState[id]) windowState[id].minimized = true;
+  trackEvent('Window', 'minimize', id);
 
   if (activeWindowId === id) activeWindowId = null;
   updateTaskbar();
@@ -112,11 +119,13 @@ export function toggleMaximize(id: string) {
       win.setAttribute('style', windowState[id].prevStyle!);
     }
     windowState[id].maximized = false;
+    trackEvent('Window', 'restore', id);
   } else {
     // Maximize
     windowState[id].prevStyle = win.getAttribute('style') || '';
     win.classList.add('maximized');
     windowState[id].maximized = true;
+    trackEvent('Window', 'maximize', id);
   }
 }
 
@@ -308,6 +317,7 @@ function initDesktopIcons() {
     const targetId = icon.dataset.windowTarget;
     if (!targetId) return;
 
+    trackEvent('Navigation', 'dblclick', `desktop-icon-${targetId}`);
     openWindow(targetId);
     icon.classList.remove('selected');
     selectedIcon = null;
@@ -340,6 +350,7 @@ function initStartMenu() {
     startMenu.classList.toggle('hidden', isOpen);
     startBtn.classList.toggle('active', !isOpen);
     startBtn.setAttribute('aria-expanded', String(!isOpen));
+    if (!isOpen) trackEvent('Navigation', 'click', 'start-menu');
   });
 
   // Close when clicking outside
@@ -359,7 +370,10 @@ function initStartMenu() {
   startMenu.querySelectorAll<HTMLElement>('[data-window-target]').forEach((item) => {
     item.addEventListener('click', () => {
       const targetId = item.dataset.windowTarget;
-      if (targetId) openWindow(targetId);
+      if (targetId) {
+        trackEvent('Navigation', 'click', `start-menu-${targetId}`);
+        openWindow(targetId);
+      }
       startMenu.classList.add('hidden');
       startBtn.classList.remove('active');
       startBtn.setAttribute('aria-expanded', 'false');
@@ -373,6 +387,7 @@ function initShutdown() {
   if (!shutdownBtn) return;
 
   shutdownBtn.addEventListener('click', () => {
+    trackEvent('Easter Egg', 'click', 'shutdown');
     const startMenu = document.getElementById('start-menu');
     const startBtn = document.getElementById('start-button');
     if (startMenu) startMenu.classList.add('hidden');

@@ -9,7 +9,7 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Blog | Nate Richardson" description="Read blog posts from Nate Richardson about web development, frontend architecture, and technology." canonicalPath="/blog">
   <!-- Desktop view -->
-  <div class="hidden md:block" style="position: fixed; inset: 0; background: var(--win95-desktop-bg); overflow: auto;">
+  <div class="desktop-only" style="position: fixed; inset: 0; background: var(--win95-desktop-bg); overflow: auto;">
     <div class="win95-window" style="width: 600px; margin: 40px auto; padding: 3px; display: flex; flex-direction: column;">
       <div class="win95-titlebar">
         <img src="/icons/blog.svg" alt="" class="win95-titlebar-icon pixelated" />
@@ -56,7 +56,7 @@ const posts = (await getCollection('blog'))
   </div>
 
   <!-- Mobile view -->
-  <div class="md:hidden" style="height: 100vh; display: flex; flex-direction: column; background: var(--win95-grey);">
+  <div class="mobile-only" style="height: 100vh; display: flex; flex-direction: column; background: var(--win95-grey);">
     <div style="background: var(--win95-grey); border-bottom: 2px solid; border-color: #ffffff #c0c0c0 #808080 #c0c0c0; height: 28px; display: flex; align-items: center; padding: 0 4px; gap: 4px;">
       <a href="/" style="background: var(--win95-grey); border: 2px solid; border-color: #ffffff #404040 #404040 #ffffff; font-size: 10px; padding: 1px 6px; text-decoration: none; color: inherit; font-family: inherit;">◄ Home</a>
       <span style="flex: 1; font-weight: bold; font-size: 11px; text-align: center;">Blog</span>

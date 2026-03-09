@@ -206,10 +206,9 @@
     setTimeout(startEasterEggs, delay);
   }
 
-  // Matomo event tracking helper
+  // Matomo Tag Manager event tracking helper
   function trackEvent(action: string, name?: string) {
-    const _paq = ((window as any)._paq = (window as any)._paq || []);
-    _paq.push(['trackEvent', 'Easter Egg', action, name]);
+    (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Easter Egg', event_action: action, event_name: name });
   }
 
   function startEasterEggs() {

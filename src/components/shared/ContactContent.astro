@@ -92,6 +92,13 @@ import { socialLinks, contactInfo } from '../../data/social';
                   <circle cx="8" cy="6" r="1.5" fill="#fff"/>
                 </svg>
               )}
+              {link.icon === 'x' && (
+                <svg viewBox="0 0 16 16" width="16" height="16">
+                  <rect x="1" y="1" width="14" height="14" rx="1" fill="#000" stroke="#000" stroke-width="0.5"/>
+                  <path d="M4,4 L7,8 L4,12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M12,4 L9,8 L12,12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              )}
             </span>
           </span>
           <span class="contact-col-name">{link.label}</span>
@@ -338,7 +345,8 @@ import { socialLinks, contactInfo } from '../../data/social';
   }
 
   .contact-list-item:hover .contact-link-icon svg rect[fill="#000080"],
-  .contact-list-item:hover .contact-link-icon svg rect[fill="#1084d0"] {
+  .contact-list-item:hover .contact-link-icon svg rect[fill="#1084d0"],
+  .contact-list-item:hover .contact-link-icon svg rect[fill="#000"] {
     opacity: 0.8;
   }
 
@@ -358,3 +366,23 @@ import { socialLinks, contactInfo } from '../../data/social';
     }
   }
 </style>
+
+<script>
+  function initContactTracking() {
+    document.querySelectorAll('.contact-list-item').forEach((link) => {
+      link.addEventListener('click', () => {
+        const label = link.querySelector('.contact-col-name')?.textContent?.trim() || 'unknown';
+        (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Outbound', event_action: 'click', event_name: `contact-${label.toLowerCase()}` });
+      });
+    });
+
+    document.querySelectorAll('.contact-send-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        (window as any)._mtm?.push({ event: 'custom_event', event_category: 'CTA', event_action: 'click', event_name: 'contact-nacho-labs' });
+      });
+    });
+  }
+
+  initContactTracking();
+  document.addEventListener('astro:page-load', initContactTracking);
+</script>

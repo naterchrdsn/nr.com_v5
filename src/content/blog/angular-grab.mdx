@@ -1,0 +1,83 @@
+---
+title: "angular-grab: Your Angular App Has an MCP Server Now"
+date: 2026-03-07
+description: "I built angular-grab so AI agents can see what you see in the browser. Grab any Angular element, feed it straight to Claude via MCP."
+tags: ["angular", "open-source", "developer-tools", "ai", "mcp"]
+draft: false
+---
+
+# angular-grab
+
+I saw [react-grab](https://github.com/aidenybai/react-grab) and thought Angular devs should have this too. Click any element in a React app, get the component context on your clipboard, paste it into an AI. Simple, brilliant, and Angular had nothing like it.
+
+So I built it. Then I gave it an MCP server, because copy-paste is for 2025.
+
+## The real play: MCP
+
+Clipboard is fine. But the actual move is connecting angular-grab directly to your AI agent via MCP (Model Context Protocol). No copy, no paste — your agent just *has* the context.
+
+Here's the flow: you grab an element in the browser, it posts to a local webhook, the MCP server stores it, and your AI agent can query your grab history with tools like `angular_grab_recent` and `angular_grab_search`. You grab a component, switch to Claude, and it already knows what you're looking at.
+
+Set it up in Claude Desktop:
+
+```json
+{
+  "mcpServers": {
+    "angular-grab": {
+      "command": "npx",
+      "args": ["@nacho-labs/angular-grab-mcp"]
+    }
+  }
+}
+```
+
+That's it. Now you can ask things like "what did I just grab?" or "search my grabs for anything in the auth module" and the agent pulls it up directly.
+
+## The clipboard version
+
+If MCP isn't your thing, the basic flow still works. Hover over anything, hit **Cmd+C** (or **Ctrl+C**), and your clipboard gets:
+
+```
+<button type="button" class="btn">Learn More</button>
+in ButtonComponent at src/app/button/button.component.ts:3
+in CardComponent at src/app/card/card.component.ts:4
+in App
+```
+
+Component chain, file paths, line numbers. Paste it in and skip the 5 minutes of "it's the third button in the card component, no not that one."
+
+[Try it live on StackBlitz](https://stackblitz.com/edit/angular-grab?embed=1&view=preview) — no install, no signup, just click around.
+
+## The Angular tax
+
+React made this easier on the react-grab folks — fibers carry component references at runtime. Angular compiles that away, so there's no obvious link between a DOM node and its source component at runtime.
+
+angular-grab handles this with build plugins (esbuild, Vite, Webpack) that inject source metadata during dev. Custom Angular CLI builders wire it up automatically:
+
+```bash
+npx @nacho-labs/angular-grab init
+```
+
+One command. No config files to edit.
+
+## Other things it does
+
+- **Freeze mode** — hit F to freeze the page mid-hover. Finally grab tooltips and dropdowns before they vanish.
+- **Floating toolbar** — for when you forget the shortcuts (no judgement).
+- **Grab history** — already grabbed something? One click to re-copy.
+- **Plugin system** — hooks for selection, copy, and content transforms.
+- **Open in VS Code** — click a file path in the toast, land on the exact line.
+
+None of this ships to production. It kills itself outside dev mode automatically.
+
+## Credit
+
+This wouldn't exist without [react-grab](https://github.com/aidenybai/react-grab). Great idea, I just ported the vibes to Angular and added an MCP server on top.
+
+## Get it
+
+```bash
+npx @nacho-labs/angular-grab init
+```
+
+[GitHub](https://github.com/nacho-labs-llc/angular-grab) | [angular-grab.com](https://angular-grab.com) | [Live demo](https://stackblitz.com/edit/angular-grab?embed=1&view=preview)

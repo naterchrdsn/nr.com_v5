@@ -20,6 +20,11 @@ export const socialLinks: SocialLink[] = [
     url: 'https://bsky.app/profile/naterichardson.com',
     icon: 'bluesky',
   },
+  {
+    label: 'X',
+    url: 'https://x.com/naterchrdsn',
+    icon: 'x',
+  },
 ];
 
 export const contactInfo = {

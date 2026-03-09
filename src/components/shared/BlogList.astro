@@ -47,3 +47,17 @@ const posts = (await getCollection('blog'))
     outline: none;
   }
 </style>
+
+<script>
+  function initBlogTracking() {
+    document.querySelectorAll('.blog-list-item').forEach((link) => {
+      link.addEventListener('click', () => {
+        const title = link.querySelector('strong')?.textContent?.trim() || 'unknown';
+        (window as any)._mtm?.push({ event: 'custom_event', event_category: 'Blog', event_action: 'click', event_name: title });
+      });
+    });
+  }
+
+  initBlogTracking();
+  document.addEventListener('astro:page-load', initBlogTracking);
+</script>
