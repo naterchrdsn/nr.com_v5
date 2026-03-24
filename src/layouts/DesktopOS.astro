@@ -7,7 +7,6 @@ import AboutContent from '../components/shared/AboutContent.astro';
 import ExperienceContent from '../components/shared/ExperienceContent.astro';
 import ProjectsContent from '../components/shared/ProjectsContent.astro';
 import ContactContent from '../components/shared/ContactContent.astro';
-import BlogList from '../components/shared/BlogList.astro';
 import BootScreen from '../components/desktop/BootScreen.astro';
 import EasterEggs from '../components/desktop/EasterEggs.astro';
 import SystemProperties from '../components/shared/SystemProperties.astro';
@@ -23,7 +22,6 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
     <DesktopIcon label="About Me" icon="/icons/about.svg" windowId="about" />
     <DesktopIcon label="Experience" icon="/icons/experience.svg" windowId="experience" />
     <DesktopIcon label="Projects" icon="/icons/projects.svg" windowId="projects" />
-    <DesktopIcon label="Blog" icon="/icons/blog.svg" windowId="blog" />
     <DesktopIcon label="Contact" icon="/icons/contact.svg" windowId="contact" />
 
     <!-- Easter Egg Icons -->
@@ -44,10 +42,6 @@ import SystemProperties from '../components/shared/SystemProperties.astro';
 
   <Window id="projects" title="Projects" icon="/icons/projects.svg" defaultWidth={620} defaultHeight={500} defaultX={200} defaultY={30}>
     <ProjectsContent />
-  </Window>
-
-  <Window id="blog" title="Blog - Notepad" icon="/icons/blog.svg" defaultWidth={500} defaultHeight={400} defaultX={180} defaultY={60}>
-    <BlogList />
   </Window>
 
   <Window id="contact" title="Contact" icon="/icons/contact.svg" defaultWidth={480} defaultHeight={400} defaultX={250} defaultY={60}>
